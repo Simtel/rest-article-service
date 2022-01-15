@@ -17,6 +17,10 @@ down: ## Down containers
 stop: ## Stop contrainers
 	@docker-compose stop	
 
+install: build up env composer-install
+
+env: ##Copy env file
+	cp .env.example .env
 restart: stop up ## Restart docker containers	
 
 mysql-console: ## Mysql Console Failed
@@ -25,13 +29,12 @@ mysql-console: ## Mysql Console Failed
 php-console: ## PHP console
 	docker exec -it --user www-data rest-article-web bash
 
+composer-install: ##Install composer packages
+	docker exec -it rest-article-web sh -c "composer install"
+
 migrate-up: ## Up MIgrate
 	docker exec -it rest-article-web sh -c "php artisan migrate"
 
-phpstan: ##Run phpstan analyse
-	docker exec -it rest-article-web sh -c "./vendor/bin/phpstan analyse --memory-limit=2G"
+test: ##Run tests
+	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit"
 
-set-githooks: ##Set githooks
-	@cd .git/hooks && \
-    	ln -sfn ../../hooks/pre-commit pre-commit && \
-    	chmod -R +x pre-commit

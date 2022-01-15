@@ -22,8 +22,6 @@ class ArticleController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        Log::info('ArticleShow:',['id' => $id]);
-
         $article = Article::whereId($id)->with('tags')->get();
 
         return response()->json($article);
@@ -69,7 +67,7 @@ class ArticleController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        Log::info('ArticleDelete:',['id' => $id]);
+
         $article = Article::findOrFail($id);
         try {
             $article->deleteOrFail();

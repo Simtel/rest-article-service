@@ -92,6 +92,8 @@ class ArticleTest extends TestCase
     {
         return [
             [Str::random(5)],
+            [Str::random(5)],
+
         ];
     }
 
