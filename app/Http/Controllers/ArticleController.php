@@ -89,4 +89,27 @@ class ArticleController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * @param  Request  $request
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function showlist(Request $request)
+    {
+        $this->validate($request,
+            [
+                'tags.*' => 'exists:tags,id',
+            ]
+        );
+
+        if(!empty($request->get('tags'))) {
+            $articles = Article::withAllTags(array_column($request->get('tags'),'id'))->with('tags');
+        } else {
+            $articles = Article::with('tags');
+        }
+
+        return response()->json($articles->get());
+    }
+
 }

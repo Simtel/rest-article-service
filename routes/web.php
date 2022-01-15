@@ -19,6 +19,7 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], callback: static function () use ($router) {
     $router->get(uri: 'articles/{id}', action: ['as' => 'article', 'uses' => 'ArticleController@show']);
+    $router->post(uri: 'articles/list', action: ['as' => 'article.lists', 'uses' => 'ArticleController@showlist']);
     $router->post(uri: 'articles/create', action: ['as' => 'article.create', 'uses' => 'ArticleController@create']);
     $router->put(uri: 'articles/{id}', action: ['as' => 'article.update', 'uses' => 'ArticleController@update']);
     $router->delete(uri: 'articles/{id}',action: ['as' => 'article.delete', 'uses' => 'ArticleController@delete']);

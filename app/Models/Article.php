@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use ArrayAccess;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -41,6 +42,25 @@ class Article extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'tags_articles', 'article_id', 'tag_id');
+    }
+
+    /**
+     * @param  Builder  $query
+     * @param  array  $tagsIds
+     *
+     * @return Builder
+     */
+    public function scopeWithAllTags(Builder $query, array $tagsIds): Builder
+    {
+        $tags = Tag::findMany($tagsIds);
+
+        collect($tags)->each(function ($tag) use ($query) {
+            $query->whereHas('tags', function (Builder $query) use ($tag) {
+                $query->where('tags.id', $tag->id ?? 0);
+            });
+        });
+
+        return $query;
     }
 
 }
