@@ -27,12 +27,36 @@ class ArticleTest extends TestCase
      *
      * @return void
      */
-    public function testCreateArticle($name): void
+    public function testCreateArticleWithoutTags($name): void
     {
         $this->post(route('article.create'), ['name' => $name])
             ->seeJson([
                 'name' => $name
             ]);
+    }
+
+    /**
+     * @dataProvider articleWithTagsProvider
+     *
+     * @param $name
+     * @param $tags
+     *
+     * @return void
+     */
+    public function testCreateArticleWithTags($name, $tags): void
+    {
+        $this->post(route('article.create'), ['name' => $name, 'tags' => $tags])
+            ->seeJsonStructure(
+                [
+                    'name',
+                    'tags' => [
+                        '*' => [
+                            'id',
+                            'name'
+                        ]
+                    ]
+                ]
+            );
     }
 
     /**
@@ -80,7 +104,7 @@ class ArticleTest extends TestCase
     public function testShowArticle(): void
     {
         $article = Article::first();
-        $this->get(route('article',['id' => $article->id]))
+        $this->get(route('article', ['id' => $article->id]))
             ->seeStatusCode(200)
             ->seeJson(['name' => $article->name]);
     }
@@ -97,5 +121,15 @@ class ArticleTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
+    public function articleWithTagsProvider(): array
+    {
+        return [
+            [Str::random(6), [['name' => Str::random(3)], ['name' => Str::random(3)]]],
+            [Str::random(6), [['name' => Str::random(3)], ['name' => Str::random(8)]]]
+        ];
+    }
 
 }

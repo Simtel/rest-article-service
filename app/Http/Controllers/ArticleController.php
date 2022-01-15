@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +13,9 @@ class ArticleController extends Controller
 {
 
     private array $rules = [
-        'name' => 'required|max:255'
+        'name' => 'required|max:255',
+        'tags' => 'filled|array',
+        'tags.*.name' => 'required|max:255'
     ];
 
     /**
@@ -39,7 +42,15 @@ class ArticleController extends Controller
 
         $article = Article::create(['name' => $request->get('name')]);
 
-        return response()->json($article);
+        if (!empty($request->get('tags'))) {
+            foreach ($request->get('tags') as $tag) {
+                $tag = Tag::firstOrNew(['name' => $tag['name']]);
+                $article->tags()->save($tag);
+            }
+        }
+
+        $article->save();
+        return response()->json(['id' => $article->id, 'name' => $article->name, 'tags' => $article->tags]);
     }
 
     /**
@@ -67,7 +78,6 @@ class ArticleController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-
         $article = Article::findOrFail($id);
         try {
             $article->deleteOrFail();
