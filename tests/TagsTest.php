@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 class TagsTest extends TestCase
 {
     /**
@@ -37,17 +39,18 @@ class TagsTest extends TestCase
      */
     public function testEditTag(): void
     {
+        $name = Str::random(5);
         $oldTag = (new App\Models\Tag)->first();
         $this->put(
             route('tag.update',
                 [
                     'id' => $oldTag->id,
-                    'name' => 'Новый тег'
+                    'name' => $name
                 ]
             )
         )
             ->seeJson([
-                'name' => 'Новый тег'
+                'name' => $name
             ]);
     }
 
@@ -57,9 +60,9 @@ class TagsTest extends TestCase
     public function tagsProvider(): array
     {
         return [
-            ['4 тег'],
-            ['5 тег'],
-            ['6 тег']
+            [Str::random(5)],
+            [Str::random(5)],
+            [Str::random(5)]
         ];
     }
 
