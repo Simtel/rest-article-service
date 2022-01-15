@@ -18,11 +18,15 @@ class CreateTagsArticlesTable extends Migration
             $table->bigInteger('article_id')->unsigned();
             $table->foreign('article_id')
                 ->references('id')
-                ->on('articles');
+                ->on('articles')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->bigInteger('tag_id')->unsigned();
             $table->foreign('tag_id')
                 ->references('id')
-                ->on('tags');
+                ->on('tags')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

@@ -18,7 +18,12 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], callback: static function () use ($router) {
-    $router->get('articles/{id}', action: ['as' => 'article', 'uses' => 'ArticleController@show']);
-    $router->post('tags/create', ['as' => 'tag.create', 'uses' => 'TagController@create']);
-    $router->put('tags/{id}', ['as' => 'tag.update', 'uses' => 'TagController@update']);
+    $router->get(uri: 'articles/{id}', action: ['as' => 'article', 'uses' => 'ArticleController@show']);
+    $router->post(uri: 'articles/create', action: ['as' => 'article.create', 'uses' => 'ArticleController@create']);
+    $router->put(uri: 'articles/{id}', action: ['as' => 'article.update', 'uses' => 'ArticleController@update']);
+    $router->delete(uri: 'articles/{id}',action: ['as' => 'article.delete', 'uses' => 'ArticleController@delete']);
+
+
+    $router->post(uri: 'tags/create', action: ['as' => 'tag.create', 'uses' => 'TagController@create']);
+    $router->put(uri: 'tags/{id}', action: ['as' => 'tag.update', 'uses' => 'TagController@update']);
 });
