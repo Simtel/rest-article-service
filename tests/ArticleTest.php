@@ -110,6 +110,39 @@ class ArticleTest extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testListArticles(): void
+    {
+        $this->post(route('article.lists'))
+            ->seeStatusCode(200)
+            ->seeJsonStructure(
+                [
+                    '*' => [
+                        'id',
+                        'name',
+                        'tags'
+                    ]
+                ]
+            );
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleWithFilter(): void
+    {
+        $article = Article::with('tags')->first();
+        $tags = [];
+        $article->tags->each(static function ($item, $key) use (&$tags) {
+            $tags[]['id'] = $item->id;
+        });
+        $this->post(route('article.lists'), ['tags' => $tags])
+            ->seeStatusCode(200)
+            ->seeJsonEquals([$article->toArray()]);
+    }
+
+    /**
      * @return string[][]
      */
     public function articleProvider(): array

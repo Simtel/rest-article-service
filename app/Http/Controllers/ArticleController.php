@@ -82,7 +82,6 @@ class ArticleController extends Controller
         try {
             $article->deleteOrFail();
         } catch (\Throwable $e) {
-            Log::info('ArticleDeleteError', [$e->getMessage()]);
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
 
@@ -103,8 +102,8 @@ class ArticleController extends Controller
             ]
         );
 
-        if(!empty($request->get('tags'))) {
-            $articles = Article::withAllTags(array_column($request->get('tags'),'id'))->with('tags');
+        if (!empty($request->get('tags'))) {
+            $articles = Article::withAllTags(array_column($request->get('tags'), 'id'))->with('tags');
         } else {
             $articles = Article::with('tags');
         }
