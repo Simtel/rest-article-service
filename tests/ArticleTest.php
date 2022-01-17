@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Article;
-use Illuminate\Support\Str;
 
 class ArticleTest extends TestCase
 {
@@ -64,7 +63,8 @@ class ArticleTest extends TestCase
      */
     public function testEditArticle(): void
     {
-        $name = Str::random(5).'edit';
+        $faker = Faker\Factory::create();
+        $name = $faker->sentence(3).'-new';
 
         $this->put(
             route('article.update',
@@ -147,9 +147,10 @@ class ArticleTest extends TestCase
      */
     public function articleProvider(): array
     {
+        $faker = Faker\Factory::create();
         return [
-            [Str::random(5)],
-            [Str::random(5)],
+            [$faker->sentence(3)],
+            [$faker->sentence(3)],
 
         ];
     }
@@ -159,9 +160,10 @@ class ArticleTest extends TestCase
      */
     public function articleWithTagsProvider(): array
     {
+        $faker = Faker\Factory::create();
         return [
-            [Str::random(6), [['name' => Str::random(3)], ['name' => Str::random(3)]]],
-            [Str::random(6), [['name' => Str::random(3)], ['name' => Str::random(8)]]]
+            [$faker->sentence(3), [['name' => $faker->word()], ['name' => $faker->word()]]],
+            [$faker->sentence(3), [['name' => $faker->word()], ['name' => $faker->word()]]]
         ];
     }
 

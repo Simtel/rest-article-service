@@ -28,6 +28,7 @@ use Laravel\Lumen\Auth\Authorizable;
  */
 class Tag extends Model
 {
+    use HasFactory;
     /**
      * @var string[]
      */

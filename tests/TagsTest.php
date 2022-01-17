@@ -59,6 +59,7 @@ class TagsTest extends TestCase
      */
     public function tagsProvider(): array
     {
+
         return [
             [Str::random(5)],
             [Str::random(5)],

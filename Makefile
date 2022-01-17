@@ -38,3 +38,5 @@ migrate-up: ## Up MIgrate
 test: ##Run tests
 	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit"
 
+db-seed: ##Run seeders
+	docker exec -it rest-article-web sh -c "php artisan db:seed"
