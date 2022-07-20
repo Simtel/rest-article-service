@@ -15,13 +15,13 @@ down: ## Down containers
 	@docker-compose down
 
 stop: ## Stop contrainers
-	@docker-compose stop	
+	@docker-compose stop
 
 install: build up env composer-install
 
 env: ##Copy env file
 	cp .env.example .env
-restart: stop up ## Restart docker containers	
+restart: stop up ## Restart docker containers
 
 mysql-console: ## Mysql Console Failed
 	@docker exec -it rest-article-db /usr/bin/mysql -uroot -pexample
@@ -32,11 +32,18 @@ php-console: ## PHP console
 composer-install: ##Install composer packages
 	docker exec -it rest-article-web sh -c "composer install"
 
-migrate-up: ## Up MIgrate
+migrate: ##Migrate
 	docker exec -it rest-article-web sh -c "php artisan migrate"
+	docker exec -it rest-article-web sh -c "php artisan migrate --env=testing"
+
+test-db-refresh: ##Refresh test database
+	docker exec -it rest-article-web sh -c "php artisan migrate:refresh --env=testing"
 
 test: ##Run tests
 	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit"
+
+testdox: ##Run tests
+	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit --testdox"
 
 db-seed: ##Run seeders
 	docker exec -it rest-article-web sh -c "php artisan db:seed"

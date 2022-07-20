@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use App\Models\Tag;
 
 class TagsTest extends TestCase
 {
@@ -39,8 +40,10 @@ class TagsTest extends TestCase
      */
     public function testEditTag(): void
     {
+        Tag::factory()->count(3)->create();
+
         $name = Str::random(5);
-        $oldTag = (new App\Models\Tag)->first();
+        $oldTag = (new Tag)->first();
         $this->put(
             route('tag.update',
                 [

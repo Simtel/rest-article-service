@@ -4,11 +4,7 @@ use App\Models\Article;
 
 class ArticleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function testCreateArticleValidateFail(): void
     {
         $this->post(route('article.create'), ['fixed' => 123])
@@ -66,10 +62,12 @@ class ArticleTest extends TestCase
         $faker = Faker\Factory::create();
         $name = $faker->sentence(3).'-new';
 
+        Article::factory()->count(1)->create();
+
         $this->put(
             route('article.update',
                 [
-                    'id' => Article::first()->id,
+                    'id' => (new App\Models\Article)->first()->id,
                     'name' => $name
                 ]
             )
@@ -93,9 +91,13 @@ class ArticleTest extends TestCase
      */
     public function testDeleteArticle(): void
     {
-        $this->delete(route('article.delete', ['id' => Article::first()->id]))
+        Article::factory()->count(3)->create();
+
+        $this->delete(route('article.delete', ['id' => (new App\Models\Article)->first()->id]))
             ->seeStatusCode(200)
             ->seeJson(['success' => true]);
+
+        $this->assertCount(2, Article::all());
     }
 
     /**
@@ -103,7 +105,10 @@ class ArticleTest extends TestCase
      */
     public function testShowArticle(): void
     {
-        $article = Article::first();
+        Article::factory()->count(3)->create();
+
+        $article = (new App\Models\Article)->first();
+
         $this->get(route('article', ['id' => $article->id]))
             ->seeStatusCode(200)
             ->seeJson(['name' => $article->name]);
@@ -132,6 +137,8 @@ class ArticleTest extends TestCase
      */
     public function testListArticleWithFilter(): void
     {
+        Article::factory()->count(5)->hasTags(2)->create();
+
         $article = Article::with('tags')->first();
         $tags = [];
         $article->tags->each(static function ($item, $key) use (&$tags) {

@@ -1,11 +1,23 @@
 <?php
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Symfony\Component\Console\Input\ArgvInput;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$envFileName = ".env";
+if (PHP_SAPI === 'cli') {
+    $input = new ArgvInput();
+    $envParameterOption = $input->getParameterOption('--env');
+    if ($input->hasParameterOption('--env') && file_exists(
+            __DIR__ . '/../' . $envFileName . '.' . $envParameterOption
+        )) {
+        $envFileName .= '.' . $envParameterOption;
+    }
+}
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__)
+    dirname(__DIR__), $envFileName
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
@@ -115,7 +127,7 @@ if ($app->environment() !== 'production') {
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;
