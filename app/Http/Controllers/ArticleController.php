@@ -78,7 +78,7 @@ class ArticleController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        $article = Article::findOrFail($id);
+        $article = (new Article)->findOrFail($id);
         try {
             $article->deleteOrFail();
         } catch (\Throwable $e) {
@@ -94,7 +94,7 @@ class ArticleController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function showlist(Request $request)
+    public function showlist(Request $request): JsonResponse
     {
         $this->validate($request,
             [

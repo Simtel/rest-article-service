@@ -2,21 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Tag
  *
  * @property int $id
  * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
@@ -24,7 +22,10 @@ use Laravel\Lumen\Auth\Authorizable;
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
+ * @property-read int|null $articles_count
+ * @method static \Database\Factories\TagFactory factory(...$parameters)
  */
 class Tag extends Model
 {

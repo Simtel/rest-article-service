@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,11 +16,14 @@ class TagController extends Controller
         'name' => 'required|max:255|unique:tags',
     ];
 
+    /**
+     * @throws ValidationException
+     */
     public function create(Request $request): JsonResponse
     {
         $this->validate($request, $this->rules);
 
-        $tag = Tag::create(['name' => $request->get('name')]);
+        $tag = (new Tag)->create(['name' => $request->get('name')]);
 
         return response()->json($tag);
     }
@@ -37,14 +39,11 @@ class TagController extends Controller
     {
         $this->validate($request, $this->rules);
 
-        $tag = Tag::findOrFail($id);
+        $tag = (new Tag)->findOrFail($id);
 
         $tag->name = $request->get('name');
         $tag->save();
 
         return response()->json($tag);
     }
-
-
-
 }
