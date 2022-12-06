@@ -68,5 +68,4 @@ class Article extends Model
 
         return $query;
     }
-
 }

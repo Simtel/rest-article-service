@@ -4,7 +4,6 @@ use App\Models\Article;
 
 class ArticleTest extends TestCase
 {
-
     public function testCreateArticleValidateFail(): void
     {
         $this->post(route('article.create'), ['fixed' => 123])
@@ -65,9 +64,10 @@ class ArticleTest extends TestCase
         Article::factory()->count(1)->create();
 
         $this->put(
-            route('article.update',
+            route(
+                'article.update',
                 [
-                    'id' => (new App\Models\Article)->first()->id,
+                    'id' => (new App\Models\Article())->first()->id,
                     'name' => $name
                 ]
             )
@@ -93,7 +93,7 @@ class ArticleTest extends TestCase
     {
         Article::factory()->count(3)->create();
 
-        $this->delete(route('article.delete', ['id' => (new App\Models\Article)->first()->id]))
+        $this->delete(route('article.delete', ['id' => (new App\Models\Article())->first()->id]))
             ->seeStatusCode(200)
             ->seeJson(['success' => true]);
 
@@ -107,7 +107,7 @@ class ArticleTest extends TestCase
     {
         Article::factory()->count(3)->create();
 
-        $article = (new App\Models\Article)->first();
+        $article = (new App\Models\Article())->first();
 
         $this->get(route('article', ['id' => $article->id]))
             ->seeStatusCode(200)
@@ -173,5 +173,4 @@ class ArticleTest extends TestCase
             [$faker->sentence(3), [['name' => $faker->word()], ['name' => $faker->word()]]]
         ];
     }
-
 }

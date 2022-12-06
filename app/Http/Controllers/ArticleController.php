@@ -6,12 +6,10 @@ use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class ArticleController extends Controller
 {
-
     private array $rules = [
         'name' => 'required|max:255',
         'tags' => 'filled|array',
@@ -78,7 +76,7 @@ class ArticleController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        $article = (new Article)->findOrFail($id);
+        $article = (new Article())->findOrFail($id);
         try {
             $article->deleteOrFail();
         } catch (\Throwable $e) {
@@ -96,7 +94,8 @@ class ArticleController extends Controller
      */
     public function showlist(Request $request): JsonResponse
     {
-        $this->validate($request,
+        $this->validate(
+            $request,
             [
                 'tags.*' => 'exists:tags,id',
             ]
@@ -110,5 +109,4 @@ class ArticleController extends Controller
 
         return response()->json($articles->get());
     }
-
 }

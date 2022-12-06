@@ -10,14 +10,15 @@ if (PHP_SAPI === 'cli') {
     $input = new ArgvInput();
     $envParameterOption = $input->getParameterOption('--env');
     if ($input->hasParameterOption('--env') && file_exists(
-            __DIR__ . '/../' . $envFileName . '.' . $envParameterOption
-        )) {
+        __DIR__ . '/../' . $envFileName . '.' . $envParameterOption
+    )) {
         $envFileName .= '.' . $envParameterOption;
     }
 }
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__), $envFileName
+    dirname(__DIR__),
+    $envFileName
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));

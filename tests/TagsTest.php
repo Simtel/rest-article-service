@@ -43,9 +43,10 @@ class TagsTest extends TestCase
         Tag::factory()->count(3)->create();
 
         $name = Str::random(5);
-        $oldTag = (new Tag)->first();
+        $oldTag = (new Tag())->first();
         $this->put(
-            route('tag.update',
+            route(
+                'tag.update',
                 [
                     'id' => $oldTag->id,
                     'name' => $name
@@ -62,13 +63,10 @@ class TagsTest extends TestCase
      */
     public function tagsProvider(): array
     {
-
         return [
             [Str::random(5)],
             [Str::random(5)],
             [Str::random(5)]
         ];
     }
-
-
 }
