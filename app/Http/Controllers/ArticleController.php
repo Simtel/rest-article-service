@@ -17,7 +17,7 @@ class ArticleController extends Controller
     ];
 
     /**
-     * @param  int  $id
+     * @param int $id
      *
      * @return JsonResponse
      */
@@ -29,7 +29,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return JsonResponse
      * @throws ValidationException
@@ -40,8 +40,9 @@ class ArticleController extends Controller
 
         $article = Article::create(['name' => $request->get('name')]);
 
-        if (!empty($request->get('tags'))) {
-            foreach ($request->get('tags') as $tag) {
+        $tags = $request->get('tags');
+        if (is_array($tags)) {
+            foreach ($tags as $tag) {
                 $tag = Tag::firstOrNew(['name' => $tag['name']]);
                 $article->tags()->save($tag);
             }
@@ -52,8 +53,8 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param  int  $id
-     * @param  Request  $request
+     * @param int $id
+     * @param Request $request
      *
      * @return JsonResponse
      * @throws ValidationException
@@ -61,16 +62,17 @@ class ArticleController extends Controller
     public function update(int $id, Request $request): JsonResponse
     {
         $this->validate($request, $this->rules);
-
+        /** @var array{name:string} $payload */
+        $payload = $request->toArray();
         $article = Article::findOrFail($id);
-        $article->name = $request->get('name');
+        $article->name = $payload['name'];
         $article->save();
 
         return response()->json($article);
     }
 
     /**
-     * @param  int  $id
+     * @param int $id
      *
      * @return JsonResponse
      */
@@ -87,7 +89,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return JsonResponse
      * @throws ValidationException
@@ -101,8 +103,9 @@ class ArticleController extends Controller
             ]
         );
 
-        if (!empty($request->get('tags'))) {
-            $articles = Article::withAllTags(array_column($request->get('tags'), 'id'))->with('tags');
+        $tags = $request->get('tags');
+        if (is_array($tags)) {
+            $articles = Article::withAllTags(array_column($tags, 'id'))->with('tags');
         } else {
             $articles = Article::with('tags');
         }

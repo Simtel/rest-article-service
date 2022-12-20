@@ -16,27 +16,49 @@
             /**
      * 
      *
-     * @method static \Illuminate\Contracts\Auth\Authenticatable loginUsingId(mixed $id, bool $remember = false)
-     * @method static \Illuminate\Contracts\Auth\Authenticatable|null user()
-     * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email',array $extraConditions = [])
-     * @method static bool attempt(array $credentials = [], bool $remember = false)
-     * @method static bool hasUser()
      * @method static bool check()
      * @method static bool guest()
-     * @method static bool once(array $credentials = [])
-     * @method static bool onceUsingId(mixed $id)
-     * @method static bool validate(array $credentials = [])
-     * @method static bool viaRemember()
-     * @method static bool|null logoutOtherDevices(string $password, string $attribute = 'password')
+     * @method static \Illuminate\Contracts\Auth\Authenticatable|null user()
      * @method static int|string|null id()
-     * @method static void login(\Illuminate\Contracts\Auth\Authenticatable $user, bool $remember = false)
-     * @method static void logout()
-     * @method static void logoutCurrentDevice()
+     * @method static bool validate(array $credentials = [])
+     * @method static bool hasUser()
      * @method static void setUser(\Illuminate\Contracts\Auth\Authenticatable $user)
+     * @method static bool attempt(array $credentials = [], bool $remember = false)
+     * @method static bool once(array $credentials = [])
+     * @method static void login(\Illuminate\Contracts\Auth\Authenticatable $user, bool $remember = false)
+     * @method static \Illuminate\Contracts\Auth\Authenticatable|bool loginUsingId(mixed $id, bool $remember = false)
+     * @method static \Illuminate\Contracts\Auth\Authenticatable|bool onceUsingId(mixed $id)
+     * @method static bool viaRemember()
+     * @method static void logout()
+     * @method static \Symfony\Component\HttpFoundation\Response|null basic(string $field = 'email', array $extraConditions = [])
+     * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email', array $extraConditions = [])
+     * @method static bool attemptWhen(array $credentials = [], array|callable|null $callbacks = null, bool $remember = false)
+     * @method static void logoutCurrentDevice()
+     * @method static \Illuminate\Contracts\Auth\Authenticatable|null logoutOtherDevices(string $password, string $attribute = 'password')
+     * @method static void attempting(mixed $callback)
+     * @method static \Illuminate\Contracts\Auth\Authenticatable getLastAttempted()
+     * @method static string getName()
+     * @method static string getRecallerName()
+     * @method static \Illuminate\Auth\SessionGuard setRememberDuration(int $minutes)
+     * @method static \Illuminate\Contracts\Cookie\QueueingFactory getCookieJar()
+     * @method static void setCookieJar(\Illuminate\Contracts\Cookie\QueueingFactory $cookie)
+     * @method static \Illuminate\Contracts\Events\Dispatcher getDispatcher()
+     * @method static void setDispatcher(\Illuminate\Contracts\Events\Dispatcher $events)
+     * @method static \Illuminate\Contracts\Session\Session getSession()
+     * @method static \Illuminate\Contracts\Auth\Authenticatable|null getUser()
+     * @method static \Symfony\Component\HttpFoundation\Request getRequest()
+     * @method static \Illuminate\Auth\SessionGuard setRequest(\Symfony\Component\HttpFoundation\Request $request)
+     * @method static \Illuminate\Support\Timebox getTimebox()
+     * @method static \Illuminate\Contracts\Auth\Authenticatable authenticate()
+     * @method static \Illuminate\Auth\SessionGuard forgetUser()
+     * @method static \Illuminate\Contracts\Auth\UserProvider getProvider()
+     * @method static void setProvider(\Illuminate\Contracts\Auth\UserProvider $provider)
+     * @method static void macro(string $name, object|callable $macro)
+     * @method static void mixin(object $mixin, bool $replace = true)
+     * @method static bool hasMacro(string $name)
+     * @method static void flushMacros()
      * @see \Illuminate\Auth\AuthManager
-     * @see \Illuminate\Contracts\Auth\Factory
-     * @see \Illuminate\Contracts\Auth\Guard
-     * @see \Illuminate\Contracts\Auth\StatefulGuard
+     * @see \Illuminate\Auth\SessionGuard
      */ 
         class Auth {
                     /**
@@ -237,8 +259,8 @@
             /**
      * 
      *
+     * @method static array<string, \Illuminate\Database\Connection> getConnections()
      * @see \Illuminate\Database\DatabaseManager
-     * @see \Illuminate\Database\Connection
      */ 
         class DB {
                     /**
@@ -925,6 +947,17 @@
                         return $instance->isDoctrineAvailable();
         }
                     /**
+         * Indicates whether native alter operations will be used when dropping or renaming columns, even if Doctrine DBAL is installed.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function usingNativeSchemaOperations()
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->usingNativeSchemaOperations();
+        }
+                    /**
          * Get a Doctrine Schema Column instance.
          *
          * @param string $table
@@ -1438,7 +1471,6 @@
      * 
      *
      * @see \Illuminate\Cache\CacheManager
-     * @see \Illuminate\Cache\Repository
      */ 
         class Cache {
                     /**
@@ -2109,6 +2141,7 @@
      * 
      *
      * @see \Illuminate\Events\Dispatcher
+     * @see \Illuminate\Support\Testing\Fakes\EventFake
      */ 
         class Event {
                     /**
@@ -2447,11 +2480,14 @@
             /**
      * 
      *
+     * @method static void write(string $level, \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string $message, array $context = [])
      * @method static \Illuminate\Log\Logger withContext(array $context = [])
      * @method static \Illuminate\Log\Logger withoutContext()
-     * @method static void write(string $level, string $message, array $context = [])
      * @method static void listen(\Closure $callback)
-     * @see \Illuminate\Log\Logger
+     * @method static \Psr\Log\LoggerInterface getLogger()
+     * @method static \Illuminate\Contracts\Events\Dispatcher getEventDispatcher()
+     * @method static void setEventDispatcher(\Illuminate\Contracts\Events\Dispatcher $dispatcher)
+     * @see \Illuminate\Log\LogManager
      */ 
         class Log {
                     /**
@@ -2732,6 +2768,7 @@
      *
      * @see \Illuminate\Queue\QueueManager
      * @see \Illuminate\Queue\Queue
+     * @see \Illuminate\Support\Testing\Fakes\QueueFake
      */ 
         class Queue {
                     /**
@@ -3385,6 +3422,17 @@
         public static function morphUsingUlids()
         {            //Method inherited from \Illuminate\Database\Schema\Builder         
                         \Illuminate\Database\Schema\MySqlBuilder::morphUsingUlids();
+        }
+                    /**
+         * Attempt to use native schema operations for dropping and renaming columns, even if Doctrine DBAL is installed.
+         *
+         * @param bool $value
+         * @return void 
+         * @static 
+         */ 
+        public static function useNativeSchemaOperationsIfPossible($value = true)
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        \Illuminate\Database\Schema\MySqlBuilder::useNativeSchemaOperationsIfPossible($value);
         }
                     /**
          * Determine if the given table has a given column.
@@ -4608,7 +4656,7 @@
             /**
      * 
      *
-     * @see \Illuminate\Contracts\Auth\Access\Gate
+     * @see \Illuminate\Auth\Access\Gate
      */ 
         class Gate {
                     /**

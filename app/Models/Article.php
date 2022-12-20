@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +23,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Article whereId($value)
  * @method static Builder|Article whereName($value)
  * @method static Builder|Article whereUpdatedAt($value)
- * @mixin Eloquent
  * @property-read Collection|Tag[] $tags
  * @property-read int|null $tags_count
  * @method static \Database\Factories\ArticleFactory factory(...$parameters)

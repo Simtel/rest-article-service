@@ -12,7 +12,7 @@ class Authenticate
      *
      * @var \Illuminate\Contracts\Auth\Factory
      */
-    protected $auth;
+    protected Auth $auth;
 
     /**
      * Create a new middleware instance.

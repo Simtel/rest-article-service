@@ -1,4 +1,4 @@
-FROM php:8.0-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 RUN apk --no-cache add shadow sudo
 
@@ -19,7 +19,6 @@ RUN docker-php-ext-install \
     bcmath \
     gd \
     pdo \
-    tokenizer \
     mysqli \
     pdo_mysql \
     zip

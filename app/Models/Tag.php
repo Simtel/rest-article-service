@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,7 +21,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
- * @mixin Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
  * @property-read int|null $articles_count
  * @method static \Database\Factories\TagFactory factory(...$parameters)

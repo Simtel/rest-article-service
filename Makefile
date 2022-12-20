@@ -30,20 +30,29 @@ php-console: ## PHP console
 	docker exec -it --user www-data rest-article-web bash
 
 composer-install: ##Install composer packages
-	docker exec -it rest-article-web sh -c "composer install"
+	docker exec -it --user www-data rest-article-web sh -c "composer install"
 
 migrate: ##Migrate
-	docker exec -it rest-article-web sh -c "php artisan migrate"
-	docker exec -it rest-article-web sh -c "php artisan migrate --env=testing"
+	docker exec -it --user www-data rest-article-web sh -c "php artisan migrate"
+	docker exec -it --user www-data rest-article-web sh -c "php artisan migrate --env=testing"
 
 test-db-refresh: ##Refresh test database
-	docker exec -it rest-article-web sh -c "php artisan migrate:refresh --env=testing"
+	docker exec -it --user www-data rest-article-web sh -c "php artisan migrate:refresh --env=testing"
 
 test: ##Run tests
-	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit"
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpunit"
 
 testdox: ##Run tests
-	docker exec -it rest-article-web sh -c "./vendor/bin/phpunit --testdox"
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpunit --testdox"
 
 db-seed: ##Run seeders
-	docker exec -it rest-article-web sh -c "php artisan db:seed"
+	docker eexec -it --user www-data rest-article-web sh -c "php artisan db:seed"
+
+rector:
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/rector process app"
+
+pint:
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/pint"
+
+phpstan:
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpstan analyze --memory-limit=2G"
