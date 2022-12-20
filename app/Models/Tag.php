@@ -29,19 +29,19 @@ class Tag extends Model
 {
     use HasFactory;
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $fillable = [
         'name'
     ];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $hidden = ['created_at', 'updated_at','pivot'];
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Article>
      */
     public function articles(): BelongsToMany
     {

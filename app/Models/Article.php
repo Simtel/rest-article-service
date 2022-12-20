@@ -41,7 +41,7 @@ class Article extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Tag>
      */
     public function tags(): BelongsToMany
     {
@@ -49,10 +49,10 @@ class Article extends Model
     }
 
     /**
-     * @param  Builder  $query
+     * @param  Builder<Article>  $query
      * @param  array  $tagsIds
      *
-     * @return Builder
+     * @return Builder<Article>
      */
     public function scopeWithAllTags(Builder $query, array $tagsIds): Builder
     {
