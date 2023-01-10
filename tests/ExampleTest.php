@@ -16,4 +16,11 @@ class ExampleTest extends TestCase
             $this->response->getContent()
         );
     }
+
+    public function testXDebugHash(): void
+    {
+        $this->get('/api/info');
+
+        $this->seeHeader('X-DEBUG-HASH', sha1($this->response->getContent()));
+    }
 }

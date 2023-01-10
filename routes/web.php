@@ -13,6 +13,7 @@
 |
 */
 
+use Illuminate\Http\JsonResponse;
 use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
@@ -20,6 +21,9 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], callback: static function () use ($router) {
+    $router->get('info', function () {
+        return new JsonResponse(['info' => true], 200);
+    });
     $router->get(uri: 'articles/{id}', action: ['as' => 'article', 'uses' => 'ArticleController@show']);
     $router->post(uri: 'articles/list', action: ['as' => 'article.lists', 'uses' => 'ArticleController@showlist']);
     $router->post(uri: 'articles/create', action: ['as' => 'article.create', 'uses' => 'ArticleController@create']);
