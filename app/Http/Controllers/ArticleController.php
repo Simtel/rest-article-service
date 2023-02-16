@@ -23,7 +23,7 @@ class ArticleController extends Controller
      *
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(string $id): JsonResponse
     {
         $article = Article::whereId($id)->with('tags')->get();
 

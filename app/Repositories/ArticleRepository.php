@@ -7,10 +7,11 @@ namespace App\Repositories;
 use App\Contracts\ArticleRepositoryInterface;
 use App\Dto\ArticleFilterDto;
 use App\Models\Article;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
-    public function findByFilter(ArticleFilterDto $dto): array
+    public function findByFilter(ArticleFilterDto $dto): Collection
     {
         $tagsIds = $dto->getTagsIds();
         if ($tagsIds !== null) {
