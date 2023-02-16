@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\ArticleRepositoryInterface;
+use App\Dto\ArticleFilterDto;
 use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
@@ -90,11 +92,11 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
-     *
+     * @param ArticleRepositoryInterface $articleRepository
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function showlist(Request $request): JsonResponse
+    public function showlist(Request $request, ArticleRepositoryInterface $articleRepository): JsonResponse
     {
         $this->validate(
             $request,
@@ -104,12 +106,13 @@ class ArticleController extends Controller
         );
 
         $tags = $request->get('tags');
+
+        $filterDto = new ArticleFilterDto();
+
         if (is_array($tags)) {
-            $articles = Article::withAllTags(array_column($tags, 'id'))->with('tags');
-        } else {
-            $articles = Article::with('tags');
+            $filterDto->setTagsIds(array_column($tags, 'id'));
         }
 
-        return response()->json($articles->get());
+        return response()->json($articleRepository->findByFilter($filterDto));
     }
 }
