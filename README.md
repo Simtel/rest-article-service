@@ -21,7 +21,7 @@ Cервис реализован на базе фреймворка Lumen.
 
 Стек:
 * Docker+Docker Compose
-* PHP 8.0 FPM
+* PHP 8.2 FPM
 * Mysql 8.0
 * Nginx 1.17
 

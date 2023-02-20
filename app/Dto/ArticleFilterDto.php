@@ -26,7 +26,4 @@ class ArticleFilterDto
     {
         $this->tagsIds = $tagsIds;
     }
-
-
-
 }

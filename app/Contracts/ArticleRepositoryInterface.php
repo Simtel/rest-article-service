@@ -7,10 +7,8 @@ namespace App\Contracts;
 use App\Dto\ArticleFilterDto;
 use Illuminate\Database\Eloquent\Collection;
 
-
 interface ArticleRepositoryInterface
 {
-
     /**
      * @param ArticleFilterDto $dto
      */

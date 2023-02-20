@@ -22,5 +22,4 @@ class ArticleRepository implements ArticleRepositoryInterface
 
         return $articles->get();
     }
-
 }
