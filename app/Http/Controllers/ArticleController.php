@@ -106,11 +106,16 @@ class ArticleController extends Controller
         );
 
         $tags = $request->get('tags');
+        $name = $request->get('name');
 
         $filterDto = new ArticleFilterDto();
 
         if (is_array($tags)) {
             $filterDto->setTagsIds(array_column($tags, 'id'));
+        }
+
+        if ($name !== null || $name !== '') {
+            $filterDto->setName($name);
         }
 
         return response()->json($articleRepository->findByFilter($filterDto));

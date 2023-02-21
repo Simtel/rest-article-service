@@ -6,6 +6,7 @@ namespace App\Dto;
 
 class ArticleFilterDto
 {
+    private ?string $name = null;
     /**
      * @var int[]|null
      */
@@ -25,5 +26,16 @@ class ArticleFilterDto
     public function setTagsIds(array $tagsIds): void
     {
         $this->tagsIds = $tagsIds;
+    }
+
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 }

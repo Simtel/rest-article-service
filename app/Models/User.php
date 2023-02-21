@@ -18,6 +18,7 @@ use Laravel\Lumen\Auth\Authorizable;
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
+ * @mixin \Eloquent
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {

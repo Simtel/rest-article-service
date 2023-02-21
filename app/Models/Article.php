@@ -27,10 +27,14 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $tags_count
  * @method static \Database\Factories\ArticleFactory factory(...$parameters)
  * @method static Builder|Article withAllTags(array $tagsIds)
+ * @mixin \Eloquent
  */
 class Article extends Model
 {
     use HasFactory;
+
+    public const TABLE = 'articles';
+
     /**
      * @var string[]
      */

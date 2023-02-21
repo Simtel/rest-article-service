@@ -135,7 +135,7 @@ class ArticleTest extends TestCase
     /**
      * @return void
      */
-    public function testListArticleWithFilter(): void
+    public function testListArticleWithFilterByTag(): void
     {
         Article::factory()->count(5)->hasTags(2)->create();
 
@@ -145,6 +145,23 @@ class ArticleTest extends TestCase
             $tags[]['id'] = $item->id;
         });
         $this->post(route('article.lists'), ['tags' => $tags])
+            ->seeStatusCode(200)
+            ->seeJsonEquals([$article->toArray()]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleWithFilterByName(): void
+    {
+        Article::factory()->count(5)->create();
+
+        $article = Article::with('tags')->first();
+        $tags = [];
+        $article->tags->each(static function ($item, $key) use (&$tags) {
+            $tags[]['id'] = $item->id;
+        });
+        $this->post(route('article.lists'), ['name' => $article->name])
             ->seeStatusCode(200)
             ->seeJsonEquals([$article->toArray()]);
     }

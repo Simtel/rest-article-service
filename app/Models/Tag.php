@@ -24,10 +24,14 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
  * @property-read int|null $articles_count
  * @method static \Database\Factories\TagFactory factory(...$parameters)
+ * @mixin \Eloquent
  */
 class Tag extends Model
 {
     use HasFactory;
+
+    public const TABLE = 'tags';
+
     /**
      * @var array<string>
      */
