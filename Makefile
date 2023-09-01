@@ -46,7 +46,7 @@ testdox: ##Run tests
 	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpunit --testdox"
 
 db-seed: ##Run seeders
-	docker eexec -it --user www-data rest-article-web sh -c "php artisan db:seed"
+	docker exec -it --user www-data rest-article-web sh -c "php artisan db:seed"
 
 rector:
 	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/rector process app"
