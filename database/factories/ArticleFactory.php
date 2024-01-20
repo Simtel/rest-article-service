@@ -5,13 +5,12 @@ namespace Database\Factories;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @method ArticleFactory hasTags(int)
+ */
 class ArticleFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = Article::class;
 
     /**

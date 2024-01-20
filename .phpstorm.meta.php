@@ -11,6 +11,7 @@ namespace PHPSTORM_META {
     */
     override(new \Illuminate\Contracts\Container\Container, map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -80,6 +81,7 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Container\Container::makeWith(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -149,6 +151,7 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::get(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -218,6 +221,7 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -287,6 +291,7 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -356,6 +361,7 @@ namespace PHPSTORM_META {
         ]));
     override(\App::get(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -425,6 +431,7 @@ namespace PHPSTORM_META {
         ]));
     override(\App::make(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -494,6 +501,7 @@ namespace PHPSTORM_META {
         ]));
     override(\App::makeWith(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -563,6 +571,7 @@ namespace PHPSTORM_META {
         ]));
     override(\app(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -632,6 +641,7 @@ namespace PHPSTORM_META {
         ]));
     override(\resolve(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -701,6 +711,7 @@ namespace PHPSTORM_META {
         ]));
     override(\Psr\Container\ContainerInterface::get(0), map([
         '' => '@',
+            'App\Contracts\ArticleRepositoryInterface' => \App\Repositories\ArticleRepository::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Contracts\Console\Kernel' => \App\Console\Kernel::class,
             'Illuminate\Contracts\Debug\ExceptionHandler' => \App\Exceptions\Handler::class,
@@ -770,6 +781,10 @@ namespace PHPSTORM_META {
         ]));
 
 
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::mock(0), map(["" => "@&\Mockery\MockInterface"]));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::partialMock(0), map(["" => "@&\Mockery\MockInterface"]));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::instance(0), type(1));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::spy(0), map(["" => "@&\Mockery\MockInterface"]));
     override(\Illuminate\Support\Arr::add(0), type(0));
     override(\Illuminate\Support\Arr::except(0), type(0));
     override(\Illuminate\Support\Arr::first(0), elementType(0));

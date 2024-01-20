@@ -3,6 +3,7 @@ includes:
 parameters:
     paths:
         - app
+        - tests
     # The level 8 is the highest level
     level: max
     ignoreErrors:

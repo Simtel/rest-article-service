@@ -18,12 +18,8 @@ class ArticleController extends Controller
         'tags.*.name' => 'required|max:255'
     ];
 
-    /**
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function show(string $id): JsonResponse
+
+    public function show(int $id): JsonResponse
     {
         $article = Article::whereId($id)->with('tags')->get();
 
@@ -114,7 +110,7 @@ class ArticleController extends Controller
             $filterDto->setTagsIds(array_column($tags, 'id'));
         }
 
-        if ($name !== null || $name !== '') {
+        if (is_string($name) && trim($name) !== '') {
             $filterDto->setName($name);
         }
 

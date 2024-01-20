@@ -21,6 +21,6 @@ class ExampleTest extends TestCase
     {
         $this->get('/api/info');
 
-        $this->seeHeader('X-DEBUG-HASH', sha1($this->response->getContent()));
+        $this->seeHeader('X-DEBUG-HASH', sha1((string)$this->response->getContent()));
     }
 }

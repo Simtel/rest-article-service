@@ -22,12 +22,8 @@ class TagsTest extends TestCase
 
     /**
      * @dataProvider tagsProvider
-     *
-     * @param $name
-     *
-     * @return void
      */
-    public function testCreateTag($name): void
+    public function testCreateTag(string $name): void
     {
         $this->post(route('tag.create'), ['name' => $name])
             ->seeJson([
@@ -48,7 +44,7 @@ class TagsTest extends TestCase
             route(
                 'tag.update',
                 [
-                    'id' => $oldTag->id,
+                    'id' => $oldTag?->id,
                     'name' => $name
                 ]
             )

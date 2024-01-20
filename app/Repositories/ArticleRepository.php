@@ -10,8 +10,12 @@ use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @template Article
+ */
 class ArticleRepository implements ArticleRepositoryInterface
 {
+
     public function findByFilter(ArticleFilterDto $dto): Collection
     {
         $articles = Article::where('id', '>', 0);

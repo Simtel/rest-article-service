@@ -17,11 +17,11 @@ class ArticleTest extends TestCase
     /**
      * @dataProvider articleProvider
      *
-     * @param $name
+     * @param string $name
      *
      * @return void
      */
-    public function testCreateArticleWithoutTags($name): void
+    public function testCreateArticleWithoutTags(string $name): void
     {
         $this->post(route('article.create'), ['name' => $name])
             ->seeJson([
@@ -32,12 +32,12 @@ class ArticleTest extends TestCase
     /**
      * @dataProvider articleWithTagsProvider
      *
-     * @param $name
-     * @param $tags
+     * @param string $name
+     * @param string[] $tags
      *
      * @return void
      */
-    public function testCreateArticleWithTags($name, $tags): void
+    public function testCreateArticleWithTags(string $name, array $tags): void
     {
         $this->post(route('article.create'), ['name' => $name, 'tags' => $tags])
             ->seeJsonStructure(
@@ -67,7 +67,7 @@ class ArticleTest extends TestCase
             route(
                 'article.update',
                 [
-                    'id' => (new App\Models\Article())->first()->id,
+                    'id' => (new App\Models\Article())->first()?->id,
                     'name' => $name
                 ]
             )
@@ -93,7 +93,7 @@ class ArticleTest extends TestCase
     {
         Article::factory()->count(3)->create();
 
-        $this->delete(route('article.delete', ['id' => (new App\Models\Article())->first()->id]))
+        $this->delete(route('article.delete', ['id' => (new App\Models\Article())->first()?->id]))
             ->seeStatusCode(200)
             ->seeJson(['success' => true]);
 
@@ -109,9 +109,9 @@ class ArticleTest extends TestCase
 
         $article = (new App\Models\Article())->first();
 
-        $this->get(route('article', ['id' => $article->id]))
+        $this->get(route('article', ['id' => $article?->id]))
             ->seeStatusCode(200)
-            ->seeJson(['name' => $article->name]);
+            ->seeJson(['name' => $article?->name]);
     }
 
     /**
@@ -137,16 +137,17 @@ class ArticleTest extends TestCase
      */
     public function testListArticleWithFilterByTag(): void
     {
+        /** @phpstan-ignore-next-line */
         Article::factory()->count(5)->hasTags(2)->create();
 
         $article = Article::with('tags')->first();
         $tags = [];
-        $article->tags->each(static function ($item, $key) use (&$tags) {
+        $article?->tags->each(static function ($item, $key) use (&$tags) {
             $tags[]['id'] = $item->id;
         });
         $this->post(route('article.lists'), ['tags' => $tags])
             ->seeStatusCode(200)
-            ->seeJsonEquals([$article->toArray()]);
+            ->seeJsonEquals([$article?->toArray()]);
     }
 
     /**
@@ -158,12 +159,12 @@ class ArticleTest extends TestCase
 
         $article = Article::with('tags')->first();
         $tags = [];
-        $article->tags->each(static function ($item, $key) use (&$tags) {
+        $article?->tags->each(static function ($item, $key) use (&$tags) {
             $tags[]['id'] = $item->id;
         });
-        $this->post(route('article.lists'), ['name' => $article->name])
+        $this->post(route('article.lists'), ['name' => $article?->name])
             ->seeStatusCode(200)
-            ->seeJsonEquals([$article->toArray()]);
+            ->seeJsonEquals([$article?->toArray()]);
     }
 
     /**

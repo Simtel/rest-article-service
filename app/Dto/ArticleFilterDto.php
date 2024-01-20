@@ -21,7 +21,7 @@ class ArticleFilterDto
     }
 
     /**
-     * @param int[]|null $tagsIds
+     * @param int[] $tagsIds
      */
     public function setTagsIds(array $tagsIds): void
     {
