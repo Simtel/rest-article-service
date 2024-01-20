@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "laravel/lumen-framework": "^v9.0.3",
         "league/flysystem": "^3.0"
     },
