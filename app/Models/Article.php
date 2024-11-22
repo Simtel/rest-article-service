@@ -35,7 +35,7 @@ class Article extends Model
     public const TABLE = 'articles';
 
     /**
-     * @var string[]
+     * @var array<int,string>
      */
     protected $fillable = [
         'name'
@@ -53,7 +53,7 @@ class Article extends Model
 
     /**
      * @param  Builder<Article>  $query
-     * @param  array  $tagsIds
+     * @param  int[]  $tagsIds
      *
      * @return Builder<Article>
      */

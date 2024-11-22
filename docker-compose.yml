@@ -2,11 +2,10 @@ version: '3'
 services:
   db:
     container_name: rest-article-db
-    image: mysql
-    #command: '--default-authentication-plugin=mysql_native_password'
+    image: mysql:8.3.0
+    command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - './docker/db:/var/lib/mysql'
-     # - './docker/conf/mysql:/etc/mysql/conf.d'
+      - mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: rest-article
       MYSQL_ROOT_PASSWORD: example
@@ -45,3 +44,5 @@ services:
     depends_on:
       - web
 
+volumes:
+  mysql:

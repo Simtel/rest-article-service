@@ -32,7 +32,7 @@ class Tag extends Model
     public const TABLE = 'tags';
 
     /**
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name'

@@ -12,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 
 class ArticleController extends Controller
 {
+    /**
+     * @var array|string[]
+     */
     private array $rules = [
         'name' => 'required|max:255',
         'tags' => 'filled|array',

@@ -181,7 +181,7 @@ class ArticleTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<array{string, array{array{name: string},array{name: string}}}>
      */
     public function articleWithTagsProvider(): array
     {

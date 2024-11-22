@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class ArticleRepository implements ArticleRepositoryInterface
 {
-
     public function findByFilter(ArticleFilterDto $dto): Collection
     {
         $articles = Article::where('id', '>', 0);
