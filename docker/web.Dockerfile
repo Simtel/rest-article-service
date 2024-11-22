@@ -13,6 +13,7 @@ RUN apk update && apk add --no-cache \
     unzip \
     vim \
     wget \
+    libxml2-dev \
     zip
 
 RUN docker-php-ext-install \
@@ -21,6 +22,7 @@ RUN docker-php-ext-install \
     pdo \
     mysqli \
     pdo_mysql \
+    xml \
     zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
