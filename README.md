@@ -43,6 +43,11 @@ make build
 make up
 ```
 
+Скопировать env
+```bash
+make env
+```
+
 Установить зависимости composer
 ```bash
 make composer-install
@@ -55,7 +60,7 @@ make install
 
 Установить миграции
 ```bash
-make migrate-up
+make migrate
 ```
 
 Заполнить таблицы данными
