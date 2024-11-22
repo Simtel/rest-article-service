@@ -170,7 +170,7 @@ class ArticleTest extends TestCase
     /**
      * @return string[][]
      */
-    public function articleProvider(): array
+    public static function articleProvider(): array
     {
         $faker = Faker\Factory::create();
         return [
@@ -183,7 +183,7 @@ class ArticleTest extends TestCase
     /**
      * @return array<array{string, array{array{name: string},array{name: string}}}>
      */
-    public function articleWithTagsProvider(): array
+    public static function articleWithTagsProvider(): array
     {
         $faker = Faker\Factory::create();
         return [
