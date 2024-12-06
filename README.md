@@ -1,74 +1,113 @@
-### Задача
-Нужно реализовать API сервиc:
+# API Service for Managing Articles and Tags
 
-В сервисе хранятся статьи. К каждой статье могут привязываться теги.
-Статья состоит из id и title. Тег из id и name
+## Task
+Implement an API service that will store articles with the ability to associate tags. Each article contains an identifier (`id`) and a title (`title`), and each tag consists of an identifier (`id`) and a name (`name`).
 
-API cервиса должно позволять:
-1) Создавать/редактировать тег. - запрос возвращает тег.
-2) Создавать/редактировать статью. (с возможностью задать теги) - запрос должен вернуть статью.
-3) Удалить статью (совсем, без softdelete)
-4) Отдавать полный список статей. С возможностью фильтрации по тегам. В фильтре можно указать несколько тегов, должны отобразиться статьи у которых есть все указанные в фильтре теги. (с выводом всех тегов)
-5) Статью по ID. (с выводом всех тегов)
+## API Functionality
+The API service should provide the following capabilities:
 
-### Требования
-Реализовать можно c использованием любого фреймворка или на чистом php.
-Формат входных и выходных данных - json.
-Авторизацию делать не нужно.
+1. Creating and editing tags. The request should return the created or updated tag.
+2. Creating and editing articles with the ability to assign tags. The request should return the created or updated article.
+3. Deleting articles without using a soft-delete mechanism.
+4. Retrieving a full list of articles with the ability to filter by tags. The filter can specify multiple tags, and it should display articles that have all the specified tags (including outputting all tags).
+5. Retrieving an article by `ID` with all associated tags.
 
-### Реализация
-Cервис реализован на базе фреймворка Lumen.
+## Requirements
+You can implement it using any framework or pure PHP. The format of the input and output data should be JSON. Authorization is not required.
 
-Стек:
-* Docker+Docker Compose
-* PHP 8.3 FPM
-* Mysql 8.0
-* Nginx 1.17
+## Implementation
+The service is implemented using the Lumen framework.
 
-### Инструкция
-Склонировать репозиторий
+### Technology Stack
+- Docker + Docker Compose
+- PHP 8.3 FPM
+- MySQL 8.0
+- Nginx 1.17
+- Lumen framework
 
-```bash
-https://github.com/Simtel/rest-article-service
+## Installation and Setup Instructions
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Simtel/rest-article-service
+    ```
+
+2. Build the containers:
+    ```bash
+    make build
+    ```
+
+3. Start the containers:
+    ```bash
+    make up
+    ```
+
+4. Copy the environment file:
+    ```bash
+    make env
+    ```
+
+5. Install dependencies using Composer:
+    ```bash
+    make composer-install
+    ```
+
+   **The previous steps can be replaced with the command:**
+    ```bash
+    make install
+    ```
+
+6. Run the migrations:
+    ```bash
+    make migrate
+    ```
+
+7. Seed the database with initial data:
+    ```bash
+    make db-seed
+    ```
+
+8. Run the tests:
+    ```bash
+    make test
+    ```
+
+## API Endpoints
+
+### Create Tag
+```
+POST /tags
 ```
 
-Cобрать контейнеры
-
-```bash
-make build
+### Update Tag
+```
+PUT /tags/{id}
 ```
 
-Запустить контейнеры
-```bash
-make up
+### Create Article
+```
+POST /articles
 ```
 
-Скопировать env
-```bash
-make env
+### Update Article
+```
+PUT /articles/{id}
 ```
 
-Установить зависимости composer
-```bash
-make composer-install
+### Delete Article
+```
+DELETE /articles/{id}
 ```
 
-Предыдущие шаги можно заменить командой 
-```bash
-make install
+### Get Articles
+```
+GET /articles?tags={tag1,tag2}
 ```
 
-Установить миграции
-```bash
-make migrate
+### Get Article by ID
+```
+GET /articles/{id}
 ```
 
-Заполнить таблицы данными
-```bash
-make db-seed
-```
-
-Запустить тесты
-```bash
-make test
-```
+## Conclusion
+This API service will efficiently manage articles and tags, providing a simple interface for creating, updating, retrieving, and deleting records as needed.
