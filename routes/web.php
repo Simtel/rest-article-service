@@ -26,11 +26,11 @@ $router->group(['prefix' => 'api'], callback: static function () use ($router) {
     });
     $router->get(uri: 'articles/{id}', action: ['as' => 'article', 'uses' => 'ArticleController@show']);
     $router->post(uri: 'articles/list', action: ['as' => 'article.lists', 'uses' => 'ArticleController@showlist']);
-    $router->post(uri: 'articles/create', action: ['as' => 'article.create', 'uses' => 'ArticleController@create']);
+    $router->post(uri: 'articles', action: ['as' => 'article.create', 'uses' => 'ArticleController@create']);
     $router->put(uri: 'articles/{id}', action: ['as' => 'article.update', 'uses' => 'ArticleController@update']);
     $router->delete(uri: 'articles/{id}', action: ['as' => 'article.delete', 'uses' => 'ArticleController@delete']);
 
 
-    $router->post(uri: 'tags/create', action: ['as' => 'tag.create', 'uses' => 'TagController@create']);
+    $router->post(uri: 'tags', action: ['as' => 'tag.create', 'uses' => 'TagController@create']);
     $router->put(uri: 'tags/{id}', action: ['as' => 'tag.update', 'uses' => 'TagController@update']);
 });

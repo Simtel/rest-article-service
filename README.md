@@ -72,42 +72,5 @@ The service is implemented using the Lumen framework.
     make test
     ```
 
-## API Endpoints
-
-### Create Tag
-```
-POST /tags
-```
-
-### Update Tag
-```
-PUT /tags/{id}
-```
-
-### Create Article
-```
-POST /articles
-```
-
-### Update Article
-```
-PUT /articles/{id}
-```
-
-### Delete Article
-```
-DELETE /articles/{id}
-```
-
-### Get Articles
-```
-GET /articles?tags={tag1,tag2}
-```
-
-### Get Article by ID
-```
-GET /articles/{id}
-```
-
 ## Conclusion
 This API service will efficiently manage articles and tags, providing a simple interface for creating, updating, retrieving, and deleting records as needed.
