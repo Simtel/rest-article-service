@@ -1,0 +1,48 @@
+name: Testing
+on:
+  push:
+    branches:
+      - master
+jobs:
+  lints:
+    name: Lints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
+        with:
+          php-version: '8.3'
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: composer install
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse
+      - name: Pint
+        run: vendor/bin/pint --test
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: example
+          MYSQL_DATABASE: db_test
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
+        with:
+          php-version: '8.3'
+          extensions: gd
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: composer install --no-scripts
+      - name: Migrate
+        run: php artisan migrate --env=github
+      - name: Run test
+        run: ./vendor/bin/phpunit
