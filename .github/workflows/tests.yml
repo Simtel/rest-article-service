@@ -26,7 +26,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: example
-          MYSQL_DATABASE: db_test
+          MYSQL_DATABASE: rest-article-test
         ports:
           - 33306:3306
         options: >-
