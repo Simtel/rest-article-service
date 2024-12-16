@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\ArticleFactory;
 use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
