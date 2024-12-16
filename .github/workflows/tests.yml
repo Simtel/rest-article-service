@@ -45,6 +45,6 @@ jobs:
       - name: Migrate
         run: php artisan migrate --env=github
       - name: Copy env
-        run: php -r "unlink('.env.testing') || copy('.env.github', '.env.testing');"
+        run: php -r "unlink('.env.testing') && copy('.env.github', '.env.testing');"
       - name: Run test
         run: ./vendor/bin/phpunit
