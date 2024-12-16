@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\ArticleFactory;
+use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,24 +29,25 @@ use Illuminate\Support\Carbon;
  */
 class Tag extends Model
 {
+    /** @use HasFactory<TagFactory> */
     use HasFactory;
 
     public const TABLE = 'tags';
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name'
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
-    protected $hidden = ['created_at', 'updated_at','pivot'];
+    protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
     /**
-     * @return BelongsToMany<Article>
+     * @return BelongsToMany<Article,$this>
      */
     public function articles(): BelongsToMany
     {

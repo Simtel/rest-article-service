@@ -41,8 +41,9 @@ class ArticleController extends Controller
 
         $article = Article::create(['name' => $request->get('name')]);
 
+        /** @var array<int, array{name:string}>|null $tags */
         $tags = $request->get('tags');
-        if (is_array($tags)) {
+        if ($tags !== null) {
             foreach ($tags as $tag) {
                 $tag = Tag::firstOrNew(['name' => $tag['name']]);
                 $article->tags()->save($tag);
@@ -104,12 +105,13 @@ class ArticleController extends Controller
             ]
         );
 
+        /** @var array<int,array{tags:string,id:int}>|null $tags */
         $tags = $request->get('tags');
         $name = $request->get('name');
 
         $filterDto = new ArticleFilterDto();
 
-        if (is_array($tags)) {
+        if ($tags !== null) {
             $filterDto->setTagsIds(array_column($tags, 'id'));
         }
 

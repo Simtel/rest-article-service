@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Article;
+use App\Models\Tag;
 
 class ArticleTest extends TestCase
 {
@@ -142,8 +143,8 @@ class ArticleTest extends TestCase
 
         $article = Article::with('tags')->first();
         $tags = [];
-        $article?->tags->each(static function ($item, $key) use (&$tags) {
-            $tags[]['id'] = $item->id;
+        $article?->tags->each(static function (Tag $item, $key) use (&$tags) {
+            $tags[] = ['id' => $item->id];
         });
         $this->post(route('article.lists'), ['tags' => $tags])
             ->seeStatusCode(200)
@@ -160,7 +161,7 @@ class ArticleTest extends TestCase
         $article = Article::with('tags')->first();
         $tags = [];
         $article?->tags->each(static function ($item, $key) use (&$tags) {
-            $tags[]['id'] = $item->id;
+            $tags[] = ['id' => $item->id];
         });
         $this->post(route('article.lists'), ['name' => $article?->name])
             ->seeStatusCode(200)

@@ -10,7 +10,9 @@ abstract class TestCase extends BaseTestCase
 
     public function createApplication(): Application
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        /** @var Application $app */
+        $app = require __DIR__.'/../bootstrap/app.php';
+        return $app;
     }
 
     protected function tearDown(): void

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ArticleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,16 +27,17 @@ use Illuminate\Support\Carbon;
  * @property-read Collection|Tag[] $tags
  * @property-read int|null $tags_count
  * @method static \Database\Factories\ArticleFactory factory(...$parameters)
- * @method static Builder|Article withAllTags(array $tagsIds)
+ * @method static Builder|Article withAllTags(int[] $tagsIds)
  */
 class Article extends Model
 {
+    /** @use HasFactory<ArticleFactory> */
     use HasFactory;
 
     public const TABLE = 'articles';
 
     /**
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'name'
@@ -44,7 +46,7 @@ class Article extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     /**
-     * @return BelongsToMany<Tag>
+     * @return BelongsToMany<Tag, $this>
      */
     public function tags(): BelongsToMany
     {
