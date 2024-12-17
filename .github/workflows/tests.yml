@@ -43,10 +43,10 @@ jobs:
       - name: Install dependencies
         run: composer install --no-scripts
       - name: Copy env
-        run: php -r "unlink('.env.testing') && copy('.env.github', '.env.testing');"
+        run: php -r "copy('.env.github', '.env');"
       - name: Show env
-        run: cat .env.testing
+        run: cat .env
       - name: Migrate
-        run: php artisan migrate --env=testing
+        run: php artisan migrate --env=github
       - name: Run test
         run: ./vendor/bin/phpunit
