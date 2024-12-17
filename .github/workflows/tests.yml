@@ -42,9 +42,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install dependencies
         run: composer install --no-scripts
-      - name: Migrate
-        run: php artisan migrate --env=github
       - name: Copy env
         run: php -r "unlink('.env.testing') && copy('.env.github', '.env.testing');"
+      - name: Show env
+        run: cat .env.testing
+      - name: Migrate
+        run: php artisan migrate --env=testing
       - name: Run test
         run: ./vendor/bin/phpunit
