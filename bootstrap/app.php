@@ -1,6 +1,5 @@
 <?php
 
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Symfony\Component\Console\Input\ArgvInput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
