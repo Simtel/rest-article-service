@@ -7,3 +7,5 @@ parameters:
     level: max
     ignoreErrors:
     excludePaths:
+    configDirectories:
+        - config

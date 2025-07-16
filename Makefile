@@ -55,4 +55,4 @@ pint:
 	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/pint"
 
 phpstan:
-	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpstan analyze --memory-limit=2G"
+	docker exec -it --user www-data rest-article-web sh -c "./vendor/bin/phpstan analyze -v --memory-limit=2G"
