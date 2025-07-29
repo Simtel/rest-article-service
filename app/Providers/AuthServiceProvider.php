@@ -11,6 +11,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    #[\Override]
     public function register(): void
     {
         //

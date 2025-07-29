@@ -39,7 +39,7 @@ class TagsTest extends TestCase
         Tag::factory()->count(3)->create();
 
         $name = Str::random(5);
-        $oldTag = (new Tag())->first();
+        $oldTag = new Tag()->first();
         $this->put(
             route(
                 'tag.update',

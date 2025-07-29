@@ -15,6 +15,7 @@ abstract class TestCase extends BaseTestCase
         return $app;
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

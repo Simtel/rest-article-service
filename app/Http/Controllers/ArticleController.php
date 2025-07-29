@@ -80,7 +80,7 @@ class ArticleController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        $article = (new Article())->findOrFail($id);
+        $article = new Article()->findOrFail($id);
         try {
             $article->deleteOrFail();
         } catch (\Throwable $e) {

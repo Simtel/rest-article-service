@@ -37,6 +37,7 @@ class Handler extends ExceptionHandler
      *
      * @throws Exception
      */
+    #[\Override]
     public function report(Throwable $exception): void
     {
         parent::report($exception);
@@ -51,6 +52,7 @@ class Handler extends ExceptionHandler
      * @return Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws Throwable
      */
+    #[\Override]
     public function render($request, Throwable $exception): Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         return parent::render($request, $exception);

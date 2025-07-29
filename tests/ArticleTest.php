@@ -68,7 +68,7 @@ class ArticleTest extends TestCase
             route(
                 'article.update',
                 [
-                    'id' => (new App\Models\Article())->first()?->id,
+                    'id' => new App\Models\Article()->first()?->id,
                     'name' => $name
                 ]
             )
@@ -94,7 +94,7 @@ class ArticleTest extends TestCase
     {
         Article::factory()->count(3)->create();
 
-        $this->delete(route('article.delete', ['id' => (new App\Models\Article())->first()?->id]))
+        $this->delete(route('article.delete', ['id' => new App\Models\Article()->first()?->id]))
             ->seeStatusCode(200)
             ->seeJson(['success' => true]);
 
@@ -108,7 +108,7 @@ class ArticleTest extends TestCase
     {
         Article::factory()->count(3)->create();
 
-        $article = (new App\Models\Article())->first();
+        $article = new App\Models\Article()->first();
 
         $this->get(route('article', ['id' => $article?->id]))
             ->seeStatusCode(200)
@@ -143,7 +143,7 @@ class ArticleTest extends TestCase
 
         $article = Article::with('tags')->first();
         $tags = [];
-        $article?->tags->each(static function (Tag $item, $key) use (&$tags) {
+        $article?->tags->each(static function (Tag $item, $key) use (&$tags): void {
             $tags[] = ['id' => $item->id];
         });
         $this->post(route('article.lists'), ['tags' => $tags])
@@ -160,7 +160,7 @@ class ArticleTest extends TestCase
 
         $article = Article::with('tags')->first();
         $tags = [];
-        $article?->tags->each(static function ($item, $key) use (&$tags) {
+        $article?->tags->each(static function ($item, $key) use (&$tags): void {
             $tags[] = ['id' => $item->id];
         });
         $this->post(route('article.lists'), ['name' => $article?->name])

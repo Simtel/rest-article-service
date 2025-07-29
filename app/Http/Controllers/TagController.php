@@ -23,7 +23,7 @@ class TagController extends Controller
     {
         $this->validate($request, $this->rules);
 
-        $tag = (new Tag())->create(['name' => $request->get('name')]);
+        $tag = new Tag()->create(['name' => $request->get('name')]);
 
         return response()->json($tag);
     }
@@ -41,7 +41,7 @@ class TagController extends Controller
 
         /** @var array{name:string} $payload */
         $payload = $request->toArray();
-        $tag = (new Tag())->findOrFail($id);
+        $tag = new Tag()->findOrFail($id);
 
         $tag->name = $payload['name'];
         $tag->save();

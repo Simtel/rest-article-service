@@ -15,10 +15,10 @@ if (PHP_SAPI === 'cli') {
     }
 }
 
-(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__),
     $envFileName
-))->bootstrap();
+)->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
@@ -123,7 +123,7 @@ $app->register(App\Providers\EventServiceProvider::class);
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
-], function ($router) {
+], function ($router): void {
     require __DIR__ . '/../routes/web.php';
 });
 

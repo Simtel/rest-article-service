@@ -3,19 +3,16 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Set\ValueObject\SetList;
-use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector;
-use RectorLaravel\Set\LaravelSetList;
 
-return static function (RectorConfig $rectorConfig): void {
-    // register single rule
-    $rectorConfig->rule(TypedPropertyFromStrictConstructorRector::class);
-
-    // here we can define, what sets of rules will be applied
-    // tip: use "SetList" class to autocomplete sets with your IDE
-    $rectorConfig->sets([
-        SetList::CODE_QUALITY,
-        SetList::PHP_82,
-        LaravelSetList::LARAVEL_90
-    ]);
-};
+return RectorConfig::configure()
+    ->withPaths([
+        __DIR__ . '/app',
+        __DIR__ . '/bootstrap',
+        __DIR__ . '/public',
+        __DIR__ . '/routes',
+        __DIR__ . '/tests',
+    ])
+    ->withPhpSets(php84: true)
+    ->withTypeCoverageLevel(0)
+    ->withDeadCodeLevel(0)
+    ->withCodeQualityLevel(0);

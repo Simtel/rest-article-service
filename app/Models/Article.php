@@ -63,8 +63,8 @@ class Article extends Model
     {
         $tags = Tag::findMany($tagsIds);
 
-        collect($tags)->each(function ($tag) use ($query) {
-            $query->whereHas('tags', function (Builder $query) use ($tag) {
+        collect($tags)->each(function ($tag) use ($query): void {
+            $query->whereHas('tags', function (Builder $query) use ($tag): void {
                 $query->where('tags.id', $tag->id ?? 0);
             });
         });
