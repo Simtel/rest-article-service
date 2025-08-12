@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use App\Models\Tag;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TagsTest extends TestCase
 {
@@ -20,9 +21,7 @@ class TagsTest extends TestCase
             );
     }
 
-    /**
-     * @dataProvider tagsProvider
-     */
+    #[DataProvider('tagsProvider')]
     public function testCreateTag(string $name): void
     {
         $this->post(route('tag.create'), ['name' => $name])

@@ -2,6 +2,7 @@
 
 use App\Models\Article;
 use App\Models\Tag;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ArticleTest extends TestCase
 {
@@ -16,12 +17,12 @@ class ArticleTest extends TestCase
     }
 
     /**
-     * @dataProvider articleProvider
      *
      * @param string $name
      *
      * @return void
      */
+    #[DataProvider('articleProvider')]
     public function testCreateArticleWithoutTags(string $name): void
     {
         $this->post(route('article.create'), ['name' => $name])
@@ -31,13 +32,13 @@ class ArticleTest extends TestCase
     }
 
     /**
-     * @dataProvider articleWithTagsProvider
      *
      * @param string $name
      * @param string[] $tags
      *
      * @return void
      */
+    #[DataProvider('articleWithTagsProvider')]
     public function testCreateArticleWithTags(string $name, array $tags): void
     {
         $this->post(route('article.create'), ['name' => $name, 'tags' => $tags])
@@ -60,7 +61,7 @@ class ArticleTest extends TestCase
     public function testEditArticle(): void
     {
         $faker = Faker\Factory::create();
-        $name = $faker->sentence(3).'-new';
+        $name = $faker->sentence(3) . '-new';
 
         Article::factory()->count(1)->create();
 
