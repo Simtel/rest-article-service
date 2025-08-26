@@ -6,119 +6,150 @@ use App\Contracts\ArticleRepositoryInterface;
 use App\Dto\ArticleFilterDto;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Services\Validation\ArticleValidationService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class ArticleController extends Controller
 {
+    public function __construct(
+        private readonly ArticleValidationService $validationService,
+        private readonly ArticleRepositoryInterface $articleRepository
+    ) {
+    }
+
     /**
-     * @var array|string[]
+     * Display the specified article with its tags.
      */
-    private array $rules = [
-        'name' => 'required|max:255',
-        'tags' => 'filled|array',
-        'tags.*.name' => 'required|max:255'
-    ];
-
-
     public function show(int $id): JsonResponse
     {
         $article = Article::whereId($id)->with('tags')->get();
-
         return response()->json($article);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws ValidationException
+     * Create a new article with optional tags.
      */
     public function create(Request $request): JsonResponse
     {
-        $this->validate($request, $this->rules);
+        try {
+            $validatedData = $this->validationService->validateCreate($request);
 
-        $article = Article::create(['name' => $request->get('name')]);
+            $article = Article::create([
+                'name' => $validatedData['name']
+            ]);
 
-        /** @var array<int, array{name:string}>|null $tags */
-        $tags = $request->get('tags');
-        if ($tags !== null) {
-            foreach ($tags as $tag) {
-                $tag = Tag::firstOrNew(['name' => $tag['name']]);
-                $article->tags()->save($tag);
+            // Attach tags if provided
+            if (!empty($validatedData['tags'])) {
+                $this->attachTagsToArticle($article, $validatedData['tags']);
             }
-        }
 
-        $article->save();
-        return response()->json(['id' => $article->id, 'name' => $article->name, 'tags' => $article->tags]);
+            // Load the article with its tags for response
+            $article->load('tags');
+
+            return response()->json([
+                'id' => $article->id,
+                'name' => $article->name,
+                'tags' => $article->tags
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        } catch (Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * @param int $id
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws ValidationException
+     * Update the specified article.
      */
     public function update(int $id, Request $request): JsonResponse
     {
-        $this->validate($request, $this->rules);
-        /** @var array{name:string} $payload */
-        $payload = $request->toArray();
-        $article = Article::findOrFail($id);
-        $article->name = $payload['name'];
-        $article->save();
+        try {
+            $validatedData = $this->validationService->validateUpdate($request);
 
-        return response()->json($article);
+            $article = Article::findOrFail($id);
+            $article->update([
+                'name' => $validatedData['name']
+            ]);
+
+            // Update tags if provided
+            if (isset($validatedData['tags'])) {
+                $article->tags()->detach(); // Remove existing tags
+                $this->attachTagsToArticle($article, $validatedData['tags']);
+            }
+
+            $article->load('tags');
+
+            return response()->json($article);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'Article not found'], 404);
+        } catch (ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        } catch (Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * @param int $id
-     *
-     * @return JsonResponse
+     * Remove the specified article.
      */
     public function delete(int $id): JsonResponse
     {
-        $article = new Article()->findOrFail($id);
         try {
-            $article->deleteOrFail();
-        } catch (\Throwable $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
-        }
+            $article = Article::findOrFail($id);
+            $article->delete();
 
-        return response()->json(['success' => true]);
+            return response()->json(['success' => true]);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'Article not found'], 404);
+        } catch (Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * @param Request $request
-     * @param ArticleRepositoryInterface $articleRepository
-     * @return JsonResponse
-     * @throws ValidationException
+     * Display a list of articles with optional filtering.
      */
-    public function showlist(Request $request, ArticleRepositoryInterface $articleRepository): JsonResponse
+    public function showlist(Request $request): JsonResponse
     {
-        $this->validate(
-            $request,
-            [
-                'tags.*' => 'exists:tags,id',
-            ]
-        );
+        try {
+            $validatedData = $this->validationService->validateList($request);
 
-        /** @var array<int,array{tags:string,id:int}>|null $tags */
-        $tags = $request->get('tags');
-        $name = $request->get('name');
+            $filterDto = new ArticleFilterDto();
 
-        $filterDto = new ArticleFilterDto();
+            // Set tag filter if provided
+            if (!empty($validatedData['tags'])) {
+                // Extract IDs from array of objects with 'id' key
+                $tagIds = array_column($validatedData['tags'], 'id');
+                $filterDto->setTagsIds($tagIds);
+            }
 
-        if ($tags !== null) {
-            $filterDto->setTagsIds(array_column($tags, 'id'));
+            // Set name filter if provided
+            if (!empty($validatedData['name']) && trim($validatedData['name']) !== '') {
+                $filterDto->setName(trim($validatedData['name']));
+            }
+
+            $articles = $this->articleRepository->findByFilter($filterDto);
+
+            return response()->json($articles);
+        } catch (ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        } catch (Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
 
-        if (is_string($name) && trim($name) !== '') {
-            $filterDto->setName($name);
+    /**
+     * Attach tags to an article.
+     */
+    private function attachTagsToArticle(Article $article, array $tags): void
+    {
+        foreach ($tags as $tagData) {
+            $tag = Tag::firstOrCreate(['name' => $tagData['name']]);
+            $article->tags()->save($tag);
         }
-
-        return response()->json($articleRepository->findByFilter($filterDto));
     }
 }
