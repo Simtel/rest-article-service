@@ -43,7 +43,7 @@ class ArticleController extends Controller
             ]);
 
             // Attach tags if provided
-            if (!empty($validatedData['tags'])) {
+            if (!empty($validatedData['tags']) && is_array($validatedData['tags'])) {
                 $this->attachTagsToArticle($article, $validatedData['tags']);
             }
 
@@ -76,7 +76,7 @@ class ArticleController extends Controller
             ]);
 
             // Update tags if provided
-            if (isset($validatedData['tags'])) {
+            if (isset($validatedData['tags']) && is_array($validatedData['tags'])) {
                 $article->tags()->detach(); // Remove existing tags
                 $this->attachTagsToArticle($article, $validatedData['tags']);
             }
@@ -121,15 +121,23 @@ class ArticleController extends Controller
             $filterDto = new ArticleFilterDto();
 
             // Set tag filter if provided
-            if (!empty($validatedData['tags'])) {
+            if (!empty($validatedData['tags']) && is_array($validatedData['tags'])) {
                 // Extract IDs from array of objects with 'id' key
+                /** @var int[] $tagIds */
                 $tagIds = array_column($validatedData['tags'], 'id');
-                $filterDto->setTagsIds($tagIds);
+                // Ensure we have an array of integers
+                $tagIds = array_filter(array_map(function ($id): int { return (int)$id; }, $tagIds));
+                if (!empty($tagIds)) {
+                    $filterDto->setTagsIds($tagIds);
+                }
             }
 
             // Set name filter if provided
-            if (!empty($validatedData['name']) && trim($validatedData['name']) !== '') {
-                $filterDto->setName(trim($validatedData['name']));
+            if (!empty($validatedData['name']) && is_string($validatedData['name'])) {
+                $trimmedName = trim($validatedData['name']);
+                if ($trimmedName !== '') {
+                    $filterDto->setName($trimmedName);
+                }
             }
 
             $articles = $this->articleRepository->findByFilter($filterDto);
@@ -144,12 +152,18 @@ class ArticleController extends Controller
 
     /**
      * Attach tags to an article.
+     *
+     * @param Article $article
+     * @param mixed[] $tags
+     * @return void
      */
     private function attachTagsToArticle(Article $article, array $tags): void
     {
         foreach ($tags as $tagData) {
-            $tag = Tag::firstOrCreate(['name' => $tagData['name']]);
-            $article->tags()->save($tag);
+            if (is_array($tagData) && isset($tagData['name']) && is_string($tagData['name'])) {
+                $tag = Tag::firstOrCreate(['name' => $tagData['name']]);
+                $article->tags()->save($tag);
+            }
         }
     }
 }

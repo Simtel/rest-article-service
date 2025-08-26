@@ -33,6 +33,10 @@ abstract class ApiController extends Controller
 
     /**
      * Return an error response.
+     *
+     * @param string $message
+     * @param int $status
+     * @param array<string, mixed> $errors
      */
     protected function error(string $message, int $status = Response::HTTP_BAD_REQUEST, array $errors = []): JsonResponse
     {
@@ -55,6 +59,8 @@ abstract class ApiController extends Controller
 
     /**
      * Return a validation error response.
+     *
+     * @param array<string, mixed> $errors
      */
     protected function validationError(array $errors): JsonResponse
     {

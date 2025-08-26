@@ -14,19 +14,30 @@ abstract class BaseValidationService
     }
 
     /**
+     * @param Request $request
+     * @param array<string, string> $rules
+     * @param array<string, string> $messages
+     * @return array<string, mixed>
      * @throws ValidationException
      */
     protected function validate(Request $request, array $rules, array $messages = []): array
     {
-        return $this->validator->make($request->all(), $rules, $messages)->validate();
+        /** @var array<string, mixed> $rules */
+        $rules = $this->validator->make($request->all(), $rules, $messages)->validate();
+        return $rules;
     }
 
     /**
+     * @param Request $request
+     * @return array<string, mixed>
      * @throws ValidationException
      */
     abstract public function validateCreate(Request $request): array;
 
     /**
+     * @param Request $request
+     * @param mixed ...$args
+     * @return array<string, mixed>
      * @throws ValidationException
      */
     abstract public function validateUpdate(Request $request, mixed ...$args): array;
