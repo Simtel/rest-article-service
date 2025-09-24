@@ -29,4 +29,7 @@ $router->group(['prefix' => 'api'], callback: static function () use ($router): 
 
     $router->post(uri: 'tags', action: ['as' => 'tag.create', 'uses' => 'TagController@create']);
     $router->put(uri: 'tags/{id}', action: ['as' => 'tag.update', 'uses' => 'TagController@update']);
+    $router->get(uri: 'tags/{id}', action: ['as' => 'tag.show', 'uses' => 'TagController@show']);
+    $router->get(uri: 'tags', action: ['as' => 'tag.index', 'uses' => 'TagController@index']);
+    $router->delete(uri: 'tags/{id}', action: ['as' => 'tag.delete', 'uses' => 'TagController@delete']);
 });

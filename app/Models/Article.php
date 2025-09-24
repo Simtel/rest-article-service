@@ -61,7 +61,16 @@ class Article extends Model
      */
     public function scopeWithAllTags(Builder $query, array $tagsIds): Builder
     {
+        if (empty($tagsIds)) {
+            return $query;
+        }
+
         $tags = Tag::findMany($tagsIds);
+
+        // If no tags found, return empty result
+        if ($tags->isEmpty()) {
+            return $query->whereRaw('0 = 1'); // This will return no results
+        }
 
         collect($tags)->each(function ($tag) use ($query): void {
             $query->whereHas('tags', function (Builder $query) use ($tag): void {

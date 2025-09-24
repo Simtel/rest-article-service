@@ -21,7 +21,7 @@ class ArticleRepository implements ArticleRepositoryInterface
         $articles->with('tags');
 
         $tagsIds = $dto->getTagsIds();
-        if ($tagsIds !== null) {
+        if ($tagsIds !== null && !empty($tagsIds)) {
             $articles->whereHas('tags', function (Builder $query) use ($tagsIds): void {
                 $query->whereIn('tags.id', $tagsIds);
             });

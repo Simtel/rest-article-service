@@ -183,6 +183,194 @@ class ArticleTest extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testShowArticleNotFound(): void
+    {
+        $this->get(route('article', ['id' => 9999]))
+            ->seeStatusCode(200)
+            ->seeJsonEquals([]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEditArticleNotFound(): void
+    {
+        $faker = Faker\Factory::create();
+        $name = $faker->sentence(3) . '-new';
+
+        $this->put(route('article.update', ['id' => 9999]), ['name' => $name])
+            ->seeStatusCode(404)
+            ->seeJson(['error' => 'Article not found']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEditArticleValidationFail(): void
+    {
+        Article::factory()->count(1)->create();
+        $article = Article::first();
+
+        $this->put(route('article.update', ['id' => $article?->id]), [])
+            ->seeStatusCode(422)
+            ->seeJson([
+                'name' => ['The name field is required.']
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testEditArticleWithTags(): void
+    {
+        $faker = Faker\Factory::create();
+        $name = $faker->sentence(3) . '-updated';
+        $tags = [['name' => $faker->word()], ['name' => $faker->word()]];
+
+        Article::factory()->count(1)->create();
+        $article = Article::first();
+
+        $this->put(
+            route('article.update', ['id' => $article?->id]),
+            ['name' => $name, 'tags' => $tags]
+        )
+            ->seeJsonStructure([
+                'id',
+                'name',
+                'tags' => [
+                    '*' => [
+                        'id',
+                        'name'
+                    ]
+                ]
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleEmptyFilters(): void
+    {
+        Article::factory()->count(3)->create();
+
+        $this->post(route('article.lists'), ['tags' => [], 'name' => ''])
+            ->seeStatusCode(200)
+            ->seeJsonStructure([
+                '*' => [
+                    'id',
+                    'name',
+                    'tags'
+                ]
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleWithFilterByMultipleTags(): void
+    {
+        /** @phpstan-ignore-next-line */
+        $articles = Article::factory()->count(3)->hasTags(3)->create();
+
+        $article = Article::with('tags')->first();
+        $tags = $article?->tags->take(2)->map(function ($tag) {
+            return ['id' => $tag->id];
+        })->toArray();
+
+        $this->post(route('article.lists'), ['tags' => $tags])
+            ->seeStatusCode(200)
+            ->seeJsonStructure([
+                '*' => [
+                    'id',
+                    'name',
+                    'tags'
+                ]
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleWithFilterByNamePartial(): void
+    {
+        $articleName = 'unique test article name';
+        Article::factory()->create(['name' => $articleName]);
+        Article::factory()->count(2)->create();
+
+        $this->post(route('article.lists'), ['name' => 'unique test'])
+            ->seeStatusCode(200)
+            ->seeJsonStructure([
+                '*' => [
+                    'id',
+                    'name',
+                    'tags'
+                ]
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testListArticleWithInvalidTags(): void
+    {
+        $this->post(route('article.lists'), ['tags' => [['id' => 'invalid']]])
+            ->seeStatusCode(422)
+            ->seeJsonStructure([
+                'tags.0.id'
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateArticleWithInvalidTags(): void
+    {
+        $faker = Faker\Factory::create();
+
+        $this->post(route('article.create'), [
+            'name' => $faker->sentence(3),
+            'tags' => [['invalid' => 'data']]
+        ])
+            ->seeStatusCode(422)
+            ->seeJsonStructure([
+                'tags.0.name'
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateArticleWithEmptyTagName(): void
+    {
+        $faker = Faker\Factory::create();
+
+        $this->post(route('article.create'), [
+            'name' => $faker->sentence(3),
+            'tags' => [['name' => '']]
+        ])
+            ->seeStatusCode(422)
+            ->seeJsonStructure([
+                'tags.0.name'
+            ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateArticleWithMaxLengthName(): void
+    {
+        $longName = str_repeat('a', 256); // Over 255 char limit
+
+        $this->post(route('article.create'), ['name' => $longName])
+            ->seeStatusCode(422)
+            ->seeJsonStructure([
+                'name'
+            ]);
+    }
+
+    /**
      * @return array<array{string, array{array{name: string},array{name: string}}}>
      */
     public static function articleWithTagsProvider(): array
