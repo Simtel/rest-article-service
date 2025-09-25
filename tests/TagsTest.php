@@ -38,12 +38,13 @@ class TagsTest extends TestCase
         Tag::factory()->count(3)->create();
 
         $name = Str::random(5);
-        $oldTag = new Tag()->first();
+        $oldTag = Tag::first();
+        /** @var \App\Models\Tag $oldTag */
         $this->put(
             route(
                 'tag.update',
                 [
-                    'id' => $oldTag?->id,
+                    'id' => $oldTag->id,
                     'name' => $name
                 ]
             )
@@ -61,11 +62,12 @@ class TagsTest extends TestCase
         Tag::factory()->count(3)->create();
 
         $tag = Tag::first();
-        $this->get(route('tag.show', ['id' => $tag?->id]))
+        /** @var \App\Models\Tag $tag */
+        $this->get(route('tag.show', ['id' => $tag->id]))
             ->seeStatusCode(200)
             ->seeJson([
-                'id' => $tag?->id,
-                'name' => $tag?->name
+                'id' => $tag->id,
+                'name' => $tag->name
             ]);
     }
 
@@ -104,7 +106,8 @@ class TagsTest extends TestCase
         Tag::factory()->count(3)->create();
 
         $tag = Tag::first();
-        $this->delete(route('tag.delete', ['id' => $tag?->id]))
+        /** @var \App\Models\Tag $tag */
+        $this->delete(route('tag.delete', ['id' => $tag->id]))
             ->seeStatusCode(200)
             ->seeJson(['success' => true]);
 

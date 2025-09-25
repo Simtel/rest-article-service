@@ -100,7 +100,7 @@ class ArticleFilterDtoTest extends TestCase
 
         $this->assertEquals($tagIds, $dto->getTagsIds());
         $this->assertIsArray($dto->getTagsIds());
-        $this->assertCount(5, $dto->getTagsIds());
+        $this->assertCount(5, (array)$dto->getTagsIds());
     }
 
     /**
@@ -115,7 +115,7 @@ class ArticleFilterDtoTest extends TestCase
 
         $this->assertEquals([], $dto->getTagsIds());
         $this->assertIsArray($dto->getTagsIds());
-        $this->assertCount(0, $dto->getTagsIds());
+        $this->assertCount(0, (array)$dto->getTagsIds());
     }
 
     /**
@@ -129,7 +129,7 @@ class ArticleFilterDtoTest extends TestCase
         $dto->setTagsIds([42]);
 
         $this->assertEquals([42], $dto->getTagsIds());
-        $this->assertCount(1, $dto->getTagsIds());
+        $this->assertCount(1, (array)$dto->getTagsIds());
     }
 
     /**
@@ -144,7 +144,7 @@ class ArticleFilterDtoTest extends TestCase
         $dto->setTagsIds($duplicateIds);
 
         $this->assertEquals($duplicateIds, $dto->getTagsIds());
-        $this->assertCount(6, $dto->getTagsIds());
+        $this->assertCount(6, (array)$dto->getTagsIds());
     }
 
     /**
@@ -307,7 +307,7 @@ class ArticleFilterDtoTest extends TestCase
 
         $this->assertEquals('Laravel Tutorial', $dto->getName());
         $this->assertEquals([15, 23, 8], $dto->getTagsIds());
-        $this->assertCount(3, $dto->getTagsIds());
+        $this->assertCount(3, (array)$dto->getTagsIds());
     }
 
     /**

@@ -30,6 +30,7 @@ class ArticleValidationServiceTest extends TestCase
             ]
         ]);
 
+        /** @var array{name: string, tags: array<array{name: string}>} $result */
         $result = $this->validationService->validateCreate($request);
 
         $this->assertEquals('Test Article', $result['name']);
@@ -47,6 +48,7 @@ class ArticleValidationServiceTest extends TestCase
             'name' => 'Test Article'
         ]);
 
+        /** @var array{name: string} $result */
         $result = $this->validationService->validateCreate($request);
 
         $this->assertEquals('Test Article', $result['name']);
@@ -168,6 +170,7 @@ class ArticleValidationServiceTest extends TestCase
             ]
         ]);
 
+        /** @var array{name: string, tags: array<array{name: string}>} $result */
         $result = $this->validationService->validateUpdate($request);
 
         $this->assertEquals('Updated Article', $result['name']);
@@ -184,6 +187,7 @@ class ArticleValidationServiceTest extends TestCase
             'name' => 'Updated Article'
         ]);
 
+        /** @var array{name: string} $result */
         $result = $this->validationService->validateUpdate($request);
 
         $this->assertEquals('Updated Article', $result['name']);
@@ -216,6 +220,7 @@ class ArticleValidationServiceTest extends TestCase
             'name' => 'search term'
         ]);
 
+        /** @var array{tags: array<array{id: int}>, name: string} $result */
         $result = $this->validationService->validateList($request);
 
         $this->assertCount(2, $result['tags']);
@@ -231,6 +236,7 @@ class ArticleValidationServiceTest extends TestCase
     {
         $request = new Request([]);
 
+        /** @var array{} $result */
         $result = $this->validationService->validateList($request);
 
         $this->assertArrayNotHasKey('tags', $result);

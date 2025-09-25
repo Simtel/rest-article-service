@@ -31,6 +31,7 @@ class BaseValidationServiceTest extends TestCase
             'email' => 'required|email'
         ];
 
+        /** @var array{name: string, email: string} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertEquals('Test Name', $result['name']);
@@ -135,6 +136,7 @@ class BaseValidationServiceTest extends TestCase
             'price' => 'required|numeric|min:0'
         ];
 
+        /** @var array{age: int, price: string} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertEquals(25, $result['age']);
@@ -161,6 +163,7 @@ class BaseValidationServiceTest extends TestCase
             'options.*.name' => 'required|string|max:100'
         ];
 
+        /** @var array{tags: array<string>, options: array<array{name: string}>} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertCount(3, $result['tags']);
@@ -184,6 +187,7 @@ class BaseValidationServiceTest extends TestCase
             'is_published' => 'required|boolean'
         ];
 
+        /** @var array{is_active: bool, is_published: bool} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertTrue($result['is_active']);
@@ -205,6 +209,7 @@ class BaseValidationServiceTest extends TestCase
             'tags' => 'sometimes|array'
         ];
 
+        /** @var array{name: string} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertEquals('Test Name', $result['name']);
@@ -220,6 +225,7 @@ class BaseValidationServiceTest extends TestCase
         $request = new Request([]);
         $rules = [];
 
+        /** @var array{} $result */
         $result = $this->validationService->testValidate($request, $rules);
 
         $this->assertEmpty($result);

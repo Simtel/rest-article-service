@@ -1,5 +1,3 @@
-<?php
-
 use App\Dto\ArticleFilterDto;
 use App\Models\Article;
 use App\Models\Tag;
@@ -9,6 +7,10 @@ use Illuminate\Database\Eloquent\Collection;
 class ArticleRepositoryTest extends TestCase
 {
     private ArticleRepository $repository;
+
+    /**
+     * @var \App\Repositories\ArticleRepository
+     */
 
     protected function setUp(): void
     {
@@ -25,6 +27,7 @@ class ArticleRepositoryTest extends TestCase
         Article::factory()->count(3)->create();
 
         $dto = new ArticleFilterDto();
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $result */
         $result = $this->repository->findByFilter($dto);
 
         $this->assertInstanceOf(Collection::class, $result);
@@ -100,16 +103,21 @@ class ArticleRepositoryTest extends TestCase
     {
         // Create tags
         $phpTag = Tag::factory()->create(['name' => 'PHP']);
+        /** @var \App\Models\Tag $phpTag */
         $jsTag = Tag::factory()->create(['name' => 'JavaScript']);
+        /** @var \App\Models\Tag $jsTag */
 
         // Create articles with tags
         $article1 = Article::factory()->create(['name' => 'Article One']);
+        /** @var \App\Models\Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Article Two']);
+        /** @var \App\Models\Article $article2 */
         $article2->tags()->attach($jsTag->id);
 
         $article3 = Article::factory()->create(['name' => 'Article Three']);
+        /** @var \App\Models\Article $article3 */
         $article3->tags()->attach([$phpTag->id, $jsTag->id]);
 
         $dto = new ArticleFilterDto();
@@ -130,17 +138,23 @@ class ArticleRepositoryTest extends TestCase
     {
         // Create tags
         $phpTag = Tag::factory()->create(['name' => 'PHP']);
+        /** @var \App\Models\Tag $phpTag */
         $jsTag = Tag::factory()->create(['name' => 'JavaScript']);
+        /** @var \App\Models\Tag $jsTag */
         $laravelTag = Tag::factory()->create(['name' => 'Laravel']);
+        /** @var \App\Models\Tag $laravelTag */
 
         // Create articles with tags
         $article1 = Article::factory()->create(['name' => 'Article One']);
+        /** @var \App\Models\Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Article Two']);
+        /** @var \App\Models\Article $article2 */
         $article2->tags()->attach([$phpTag->id, $laravelTag->id]);
 
         $article3 = Article::factory()->create(['name' => 'Article Three']);
+        /** @var \App\Models\Article $article3 */
         $article3->tags()->attach($jsTag->id);
 
         $dto = new ArticleFilterDto();
@@ -193,19 +207,25 @@ class ArticleRepositoryTest extends TestCase
     {
         // Create tags
         $phpTag = Tag::factory()->create(['name' => 'PHP']);
+        /** @var \App\Models\Tag $phpTag */
         $jsTag = Tag::factory()->create(['name' => 'JavaScript']);
+        /** @var \App\Models\Tag $jsTag */
 
         // Create articles
         $article1 = Article::factory()->create(['name' => 'PHP Tutorial for Beginners']);
+        /** @var \App\Models\Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Advanced PHP Techniques']);
+        /** @var \App\Models\Article $article2 */
         $article2->tags()->attach($phpTag->id);
 
         $article3 = Article::factory()->create(['name' => 'JavaScript Fundamentals']);
+        /** @var \App\Models\Article $article3 */
         $article3->tags()->attach($jsTag->id);
 
         $article4 = Article::factory()->create(['name' => 'PHP and JavaScript Together']);
+        /** @var \App\Models\Article $article4 */
         $article4->tags()->attach([$phpTag->id, $jsTag->id]);
 
         $dto = new ArticleFilterDto();
@@ -275,7 +295,9 @@ class ArticleRepositoryTest extends TestCase
     public function testFindByFilterEnsuresTagsAreLoaded(): void
     {
         $tag = Tag::factory()->create();
+        /** @var \App\Models\Tag $tag */
         $article = Article::factory()->create();
+        /** @var \App\Models\Article $article */
         $article->tags()->attach($tag->id);
 
         $dto = new ArticleFilterDto();
@@ -303,6 +325,7 @@ class ArticleRepositoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
 
         if ($result->isNotEmpty()) {
+            /** @var \App\Models\Article $article */
             $article = $result->first();
             $this->assertInstanceOf(Article::class, $article);
             $this->assertNotNull($article->id);

@@ -103,7 +103,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateSuccess(): void
     {
-        /** @var Tag $tag */
         $tag = Tag::factory()->create(['name' => 'original-name']);
 
         $request = new Request([
@@ -120,7 +119,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateSuccessWithSameName(): void
     {
-        /** @var Tag $tag */
         $tag = Tag::factory()->create(['name' => 'same-name']);
 
         $request = new Request([
@@ -137,7 +135,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateFailsWithoutName(): void
     {
-        /** @var Tag $tag */
         $tag = Tag::factory()->create();
 
         $request = new Request([]);
@@ -151,7 +148,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateFailsWithEmptyName(): void
     {
-        /** @var Tag $tag */
         $tag = Tag::factory()->create();
 
         $request = new Request([
@@ -167,7 +163,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateFailsWithLongName(): void
     {
-        /** @var Tag $tag */
         $tag = Tag::factory()->create();
 
         $request = new Request([
@@ -182,9 +177,8 @@ class TagValidationServiceTest extends TestCase
      * @return void
      */
     public function testValidateUpdateFailsWithExistingName(): void
-    {  /** @var Tag $tag1 */
+    {  
         $tag1 = Tag::factory()->create(['name' => 'tag-one']);
-        /** @var Tag $tag2 */
         $tag2 = Tag::factory()->create(['name' => 'tag-two']);
 
         $request = new Request([
@@ -200,7 +194,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateWithoutTagId(): void
     {
-        /** @var Tag $tag */
         Tag::factory()->create(['name' => 'existing-tag']);
 
         $request = new Request([
@@ -216,7 +209,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateWithNullTagId(): void
     {
-        /** @var Tag $tag */
         Tag::factory()->create(['name' => 'existing-tag']);
 
         $request = new Request([
@@ -232,7 +224,6 @@ class TagValidationServiceTest extends TestCase
      */
     public function testValidateUpdateWithInvalidTagId(): void
     {
-        /** @var Tag $tag */
         Tag::factory()->create(['name' => 'existing-tag']);
 
         $request = new Request([
