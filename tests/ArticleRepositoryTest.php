@@ -1,3 +1,5 @@
+<?php
+
 use App\Dto\ArticleFilterDto;
 use App\Models\Article;
 use App\Models\Tag;

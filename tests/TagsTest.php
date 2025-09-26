@@ -157,8 +157,9 @@ class TagsTest extends TestCase
     {
         $tagName1 = 'tag-one';
         $tagName2 = 'tag-two';
-
+        /** @var Tag $tag1 */
         $tag1 = Tag::factory()->create(['name' => $tagName1]);
+        /** @var Tag $tag2 */
         $tag2 = Tag::factory()->create(['name' => $tagName2]);
 
         // Try to update tag2 with tag1's name

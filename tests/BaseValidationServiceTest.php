@@ -116,9 +116,12 @@ class BaseValidationServiceTest extends TestCase
             $exception = $e;
         }
 
+
         $this->assertNotNull($exception);
         $this->assertArrayHasKey('name', $exception->errors());
-        $this->assertContains('Custom required message', $exception->errors()['name']);
+        /** @var iterable<mixed> $errors */
+        $errors = $exception->errors()['name'];
+        $this->assertContains('Custom required message', $errors);
     }
 
     /**
