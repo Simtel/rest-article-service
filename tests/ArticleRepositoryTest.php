@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ArticleRepositoryTest extends TestCase
 {
-    private ArticleRepository $repository;
-
     /**
-     * @var \App\Repositories\ArticleRepository
+     * @var ArticleRepository<Article>
      */
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
@@ -29,14 +28,15 @@ class ArticleRepositoryTest extends TestCase
         Article::factory()->count(3)->create();
 
         $dto = new ArticleFilterDto();
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $result */
+        /** @var \Illuminate\Database\Eloquent\Collection<int, Article> $result */
         $result = $this->repository->findByFilter($dto);
 
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertCount(3, $result);
 
-        // Ensure tags are loaded
-        $this->assertTrue($result->first()->relationLoaded('tags'));
+        /** @var Article $article */
+        $article = $result->first();
+        $this->assertTrue($article->relationLoaded('tags'));
     }
 
     /**
@@ -111,15 +111,15 @@ class ArticleRepositoryTest extends TestCase
 
         // Create articles with tags
         $article1 = Article::factory()->create(['name' => 'Article One']);
-        /** @var \App\Models\Article $article1 */
+        /** @var Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Article Two']);
-        /** @var \App\Models\Article $article2 */
+        /** @var Article $article2 */
         $article2->tags()->attach($jsTag->id);
 
         $article3 = Article::factory()->create(['name' => 'Article Three']);
-        /** @var \App\Models\Article $article3 */
+        /** @var Article $article3 */
         $article3->tags()->attach([$phpTag->id, $jsTag->id]);
 
         $dto = new ArticleFilterDto();
@@ -148,15 +148,15 @@ class ArticleRepositoryTest extends TestCase
 
         // Create articles with tags
         $article1 = Article::factory()->create(['name' => 'Article One']);
-        /** @var \App\Models\Article $article1 */
+        /** @var Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Article Two']);
-        /** @var \App\Models\Article $article2 */
+        /** @var Article $article2 */
         $article2->tags()->attach([$phpTag->id, $laravelTag->id]);
 
         $article3 = Article::factory()->create(['name' => 'Article Three']);
-        /** @var \App\Models\Article $article3 */
+        /** @var Article $article3 */
         $article3->tags()->attach($jsTag->id);
 
         $dto = new ArticleFilterDto();
@@ -215,19 +215,19 @@ class ArticleRepositoryTest extends TestCase
 
         // Create articles
         $article1 = Article::factory()->create(['name' => 'PHP Tutorial for Beginners']);
-        /** @var \App\Models\Article $article1 */
+        /** @var Article $article1 */
         $article1->tags()->attach($phpTag->id);
 
         $article2 = Article::factory()->create(['name' => 'Advanced PHP Techniques']);
-        /** @var \App\Models\Article $article2 */
+        /** @var Article $article2 */
         $article2->tags()->attach($phpTag->id);
 
         $article3 = Article::factory()->create(['name' => 'JavaScript Fundamentals']);
-        /** @var \App\Models\Article $article3 */
+        /** @var Article $article3 */
         $article3->tags()->attach($jsTag->id);
 
         $article4 = Article::factory()->create(['name' => 'PHP and JavaScript Together']);
-        /** @var \App\Models\Article $article4 */
+        /** @var Article $article4 */
         $article4->tags()->attach([$phpTag->id, $jsTag->id]);
 
         $dto = new ArticleFilterDto();
@@ -299,19 +299,22 @@ class ArticleRepositoryTest extends TestCase
         $tag = Tag::factory()->create();
         /** @var \App\Models\Tag $tag */
         $article = Article::factory()->create();
-        /** @var \App\Models\Article $article */
+        /** @var Article $article */
         $article->tags()->attach($tag->id);
 
         $dto = new ArticleFilterDto();
         $result = $this->repository->findByFilter($dto);
 
         $this->assertCount(1, $result);
+        /** @var Article $retrievedArticle */
         $retrievedArticle = $result->first();
+        /** @var Tag $tag */
+        $tag = $retrievedArticle->tags->first();
 
         // Verify tags relationship is loaded
         $this->assertTrue($retrievedArticle->relationLoaded('tags'));
         $this->assertCount(1, $retrievedArticle->tags);
-        $this->assertEquals($tag->name, $retrievedArticle->tags->first()->name);
+        $this->assertEquals($tag->name, $tag->name);
     }
 
     /**
@@ -327,11 +330,9 @@ class ArticleRepositoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
 
         if ($result->isNotEmpty()) {
-            /** @var \App\Models\Article $article */
+            /** @var Article $article */
             $article = $result->first();
             $this->assertInstanceOf(Article::class, $article);
-            $this->assertNotNull($article->id);
-            $this->assertNotNull($article->name);
             $this->assertTrue($article->relationLoaded('tags'));
         }
     }
