@@ -8,11 +8,11 @@ use Illuminate\Validation\ValidationException;
 
 class TagValidationService extends BaseValidationService
 {
-    private const CREATE_RULES = [
+    private const array CREATE_RULES = [
         'name' => 'required|string|max:255'
     ];
 
-    private const UPDATE_RULES = [
+    private const array UPDATE_RULES = [
         'name' => 'required|string|max:255'
     ];
 

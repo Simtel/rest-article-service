@@ -7,19 +7,19 @@ use Illuminate\Validation\ValidationException;
 
 class ArticleValidationService extends BaseValidationService
 {
-    private const CREATE_RULES = [
+    private const array CREATE_RULES = [
         'name' => 'required|string|max:255',
         'tags' => 'sometimes|array',
         'tags.*.name' => 'required|string|max:255'
     ];
 
-    private const UPDATE_RULES = [
+    private const array UPDATE_RULES = [
         'name' => 'required|string|max:255',
         'tags' => 'sometimes|array',
         'tags.*.name' => 'required|string|max:255'
     ];
 
-    private const LIST_RULES = [
+    private const array LIST_RULES = [
         'tags' => 'sometimes|array',
         'tags.*.id' => 'required|integer',
         'name' => 'sometimes|string|max:255'
