@@ -126,7 +126,7 @@ class ArticleController extends Controller
                 /** @var int[] $tagIds */
                 $tagIds = array_column($validatedData['tags'], 'id');
                 // Ensure we have an array of integers
-                $tagIds = array_filter(array_map(fn($id): int => (int)$id, $tagIds));
+                $tagIds = array_filter(array_map(fn ($id): int => (int)$id, $tagIds));
                 if (!empty($tagIds)) {
                     $filterDto->setTagsIds($tagIds);
                 }
